@@ -240,7 +240,8 @@ app.post('/webhook', (req, res) => {
  
   var sender = req.body.events[0].source.userId
   var replyToken = req.body.events[0].replyToken
-  console.log("Message from User : "+ text + " || UserId : " + sender + " || repToken : "+ replyToken)
+  console.log("Message from User : "+ text + " || UserId : " + sender )
+  console.log("Message to User : "+ greetingMsg )
   console.log("Type of sender ID : "+ typeof sender + " || Sender type : " + typeof text)
   
 
