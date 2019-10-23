@@ -1,4 +1,45 @@
 //////////////////////////////////////////////////Require NPM///////////////////////////////////////////////////////////
+var admin = require("firebase-admin");
+var serviceAccount = require("./serviceAccountKey.json");
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://fir-bot-e4e78-253800.firebaseio.com"
+});
+
+
+
+var db = admin.database();
+var ref = db.ref("server/saving-data/fireblog");
+
+var usersRef = ref.child("users");
+// usersRef.set({
+//   alanisawesome: {
+//     date_of_birth: "June 23, 1912",
+//     full_name: "Alan Turing"
+//   },
+//   gracehop: {
+//     date_of_birth: "December 9, 1906",
+//     full_name: "Grace Hopper"
+//   }
+// });
+
+usersRef.child("alanisawesome").set({
+  date_of_birth: "June 23, 1912",
+  full_name: "Alan Turing"
+});
+usersRef.child("gracehop").set({
+  date_of_birth: "December 9, 1906",
+  full_name: "Grace Hopper"
+});
+
+
+
+var starCountRef = firebase.database().ref('posts/' + postId + '/starCount');
+starCountRef.on('value', function(snapshot) {
+  updateStarCount(postElement, snapshot.val());
+});
+
+
 var express = require('express')
 var bodyParser = require('body-parser')
 var request = require('request')
@@ -217,7 +258,7 @@ app.post('/webhook', (req, res) => {
   
   if(type === 'text'){
     var text = req.body.events[0].message.text;
-    console.log('text', text)
+    console.log('text from user = ', text)
   }
   else if(type === 'location'){
     var userLat = req.body.events[0].message.latitude
