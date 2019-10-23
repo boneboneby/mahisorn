@@ -478,13 +478,13 @@ function quickReplyWeatherDailbyRestrict (sender, text) {
     to: sender,
     messages: [
       {
-        "quickReply": {
-          "items": [
+        quickReply: {
+          items: [
             {
-              "type": "action",
-              "action": {
-                "type": "cameraRoll",
-                "label": "Send photo"
+              type: "action",
+              action: {
+                type: "cameraRoll",
+                label: "Send photo"
               }
             }
             // },
