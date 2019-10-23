@@ -298,7 +298,8 @@ app.post('/webhook', (req, res) => {
     entrepreneurCredit(sender)
   }
   else {
-    if(!isSwitchCase){deFaultFallback(sender, text);}
+    if(!isSwitchCase){
+      deFaultFallback(sender, text);}
   }
 }
   res.sendStatus(200)
@@ -682,21 +683,25 @@ function groupCredit (sender, text) {
 function sendGreetingMessage (sender, text) {
   randomGreetingNum = getRandomInt(2);
   let greetingMsg = "";
-  if (text === weatherToday){
-    if(randomGreetingNum == 0){
-      greetingMsg = "สวัสดีค่ะ BAAC-Smart พร้อมให้บริการค่ะ";
+  switch(text){
+    
+    case check_conditions(text, weatherToday) === true && text :{
+      if(randomGreetingNum == 0){
+        greetingMsg = "สวัสดีค่ะ BAAC-Smart พร้อมให้บริการค่ะ";
+      }
+      else if (randomGreetingNum == 1){
+        greetingMsg = "สวัสดีค่า~ สามารถเลือกใช้งานได้โดยกดที่เมนูได้เลยค่ะ";
+      }
+      else if(randomGreetingNum == 2){
+        greetingMsg = "สวัสดีค่ะ BAAC-Smart ยินดีให้บริการค่ะ";
+      }
     }
-    else if (randomGreetingNum == 1){
-      greetingMsg = "สวัสดีค่า~ สามารถเลือกใช้งานได้โดยกดที่เมนูได้เลยค่ะ";
+    case check_conditions(text, weatherTodayLocal) === true && text :{
+      greetingMsg = "สวัสดีค่ะ[local language undeploy]";
     }
-    else if(randomGreetingNum == 2){
-      greetingMsg = "สวัสดีค่ะ BAAC-Smart ยินดีให้บริการค่ะ";
-    }
-      
+    
   }
-  else if (text === weatherTodayLocal){
-    greetingMsg = "สวัสดีค่า(processing)" 
-  }
+  
   let data = {
     to: sender,
     messages: [
