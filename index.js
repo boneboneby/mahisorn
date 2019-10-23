@@ -175,18 +175,18 @@ function requestImg (sender , userLat , userLon){
 
 
 ////////////////////////////////////////////////Group word////////////////////////////////////////////////////////////
-const weatherToday = ["อากาศวันนี้",  , "สภาพอากาศวันนี้" ];
-const weatherTodayLocal = ["มื้อนี้เป็นหยังอากาศ", "อากาศมื้อนี้เป็นจั่งใด๋"]
-const isTodayRain = ["วันนี้ฝนตกมั้ย", "วันนี้ฝนตกป่าว" , "มื้อนี่ฝนตกบ่"];
-const wordGreeting = ["สวัสดี","สวัสดีจ้า" , "สวัสดีครับ" , "สวัสดีค่ะ"];
-const greetingWordLocal = [ "เป็นจั่งใด๋" ]
-const howToUse = ["พยากรณ์ซิได๋บุ่","ทำหยังได้บ้าง"]
-const wordDailyByZipCode = ["พยากรณ์อากาศประจำวันเขตลาดพร้าว","พยากรณ์อากาศประจำวันเขตดินแดง","พยากรณ์อากาศประจำวันเขตตลิ่งชัน","พยากรณ์อากาศประจำวันเขตคันนายาว", "พยากรณ์อากาศประจำวันเขตสาทร"]
+var weatherToday = ["อากาศวันนี้",  , "สภาพอากาศวันนี้" ];
+var weatherTodayLocal = ["มื้อนี้เป็นหยังอากาศ", "อากาศมื้อนี้เป็นจั่งใด๋"]
+var isTodayRain = ["วันนี้ฝนตกมั้ย", "วันนี้ฝนตกป่าว" , "มื้อนี่ฝนตกบ่"];
+var wordGreeting = ["สวัสดี","สวัสดีจ้า" , "สวัสดีครับ" , "สวัสดีค่ะ"];
+var greetingWordLocal = [ "เป็นจั่งใด๋" ]
+var howToUse = ["พยากรณ์ซิได๋บุ่","ทำหยังได้บ้าง"]
+var wordDailyByZipCode = ["พยากรณ์อากาศประจำวันเขตลาดพร้าว","พยากรณ์อากาศประจำวันเขตดินแดง","พยากรณ์อากาศประจำวันเขตตลิ่งชัน","พยากรณ์อากาศประจำวันเขตคันนายาว", "พยากรณ์อากาศประจำวันเขตสาทร"]
 
 //Carousel invoke
-const wordStarterWeatherMenu = ["พยากรณ์อากาศ"]
-const wordMenuDailyWeather = ["พยากรณ์อากาศประจำวัน"]
-const wordMenuForecastWeather = ["พยากรณ์อากาศ 5 วัน"]
+var wordStarterWeatherMenu = ["พยากรณ์อากาศ"]
+var wordMenuDailyWeather = ["พยากรณ์อากาศประจำวัน"]
+var wordMenuForecastWeather = ["พยากรณ์อากาศ 5 วัน"]
 
 
 
@@ -267,36 +267,38 @@ app.post('/webhook', (req, res) => {
     console.log('text from user before compare with Switch case', text)
     switch(text){
       
-      case check_conditions(text, wordStarterWeatherMenu) === true && text : 
-      isSwitchCase = true
-      weatherMenuCarouselTemplate(sender);
+      case check_conditions(text, wordStarterWeatherMenu) === true && text : {
+        isSwitchCase = true
+        weatherMenuCarouselTemplate(sender);
+        break;
+      }
       
-      case check_conditions(text, wordGreeting) === true && text :
-        isSwitchCase = true;
+      case check_conditions(text, wordGreeting) === true && text :{
+        isSwitchCase = true
         sendGreetingMessage(sender, text) 
-
-      
-      case check_conditions(text, weatherToday || wordMenuDailyWeather) === true && text :
-        isSwitchCase = true;
-        isDailyWeather = true;
+        break;
+      }
+      case check_conditions(text, weatherToday || wordMenuDailyWeather) === true && text :{
+        isSwitchCase = true
+        isDailyWeather = true
         weatherDailyMenuCarouselTemplate(sender, text) 
-
-      
-      case check_conditions(text, wordMenuForecastWeather) === true && text :
-        isSwitchCase = true;
+        break;
+      }
+      case check_conditions(text, wordMenuForecastWeather) === true && text :{
+        isSwitchCase = true
         a5dayMenuCarouselTemplate(sender, text) 
-
-      
-      case check_conditions(text, wordGreeting) === true && text :
-        isSwitchCase = true;
+        break;
+      }
+      case check_conditions(text, wordGreeting) === true && text :{
+        isSwitchCase = true
         sendGreetingMessage(sender, text) 
-
-      
-      case check_conditions(text, wordDailyByZipCode) === true && text :
+        break;
+      }
+      case check_conditions(text, wordDailyByZipCode) === true && text :{
         isSwitchCase = true;
         weatherDailyByDestrict(sender, text) 
-
-      
+        break;
+      }
     }
   
   
