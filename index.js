@@ -478,6 +478,8 @@ function quickReplyWeatherDailbyRestrict (sender, text) {
     to: sender,
     messages: [
       {
+        type: "text",
+        text: "Hello Quick Reply!",
         quickReply: {
           items: [
             {
