@@ -237,6 +237,7 @@ app.post('/webhook', (req, res) => {
   if(type === 'location' && eventsType === 'message' && isDailyWeather){
     if(isGeoDaily){
       geoDaily(sender , userLat , userLon )
+      isGeoDaily = false;
     }
     //requestImg(sender , userLat , userLon)
 
@@ -253,7 +254,7 @@ app.post('/webhook', (req, res) => {
       }
     for ( i=0;i  < weatherToday.length ;  i++ ){
       if (weatherToday[i]==text) {
-        
+        isGeoDaily = true;
         weatherDailyMenuCarouselTemplate(sender)
         break;
         }
@@ -279,6 +280,7 @@ app.post('/webhook', (req, res) => {
   }
   else if (text === 'พยากรณ์อากาศตามเขต'){
     quickReplyWeatherDailbyRestrict(sender)
+    isGeoDaily = false;
   }
   else if( text === 'พยากรณ์อากาศ 5 วัน'){
     a5dayMenuCarouselTemplate(sender)
@@ -296,9 +298,9 @@ app.post('/webhook', (req, res) => {
     entrepreneurCredit(sender)
   }
   else {
-    if(!isSwitchCase){
+    
       deFaultFallback(sender, text);}
-  }
+  
 }
   res.sendStatus(200)
 })
@@ -477,6 +479,13 @@ function quickReplyWeatherDailbyRestrict (sender, text) {
       {
         "quickReply": {
           "items": [
+            {
+              "type": "action",
+              "action": {
+                "type": "cameraRoll",
+                "label": "Send photo"
+              }
+            },
             {
               "type": "action",
               "action": {
