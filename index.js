@@ -681,10 +681,9 @@ function groupCredit (sender, text) {
 } 
 
 function sendGreetingMessage (sender, text) {
-  randomGreetingNum = getRandomInt(2);
+  randomGreetingNum = getRandomInt(3);
   let greetingMsg = "";
   switch(text){
-    
     case check_conditions(text, weatherToday) === true && text :{
       if(randomGreetingNum == 0){
         greetingMsg = "สวัสดีค่ะ BAAC-Smart พร้อมให้บริการค่ะ";
@@ -700,7 +699,7 @@ function sendGreetingMessage (sender, text) {
       greetingMsg = "สวัสดีค่ะ[local language undeploy]";
     }
     
-  }
+  
   
   let data = {
     to: sender,
@@ -725,6 +724,7 @@ function sendGreetingMessage (sender, text) {
     if (res) console.log('URL : https://api.line.me/v2/bot/message/push || Type of method : POST || Result : success')
     if (body) console.log(body)
   })
+}
 }
 
 function deFaultFallback (sender, text) {
