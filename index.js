@@ -221,6 +221,7 @@ app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
 app.post('/webhook', (req, res) => {
   var type = req.body.events[0].message.type
+  var eventsType = req.body.events[0].type
   if(type === 'text'){
     var text = req.body.events[0].message.text;
   }
