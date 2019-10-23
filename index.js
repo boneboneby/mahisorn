@@ -254,13 +254,14 @@ app.post('/webhook', (req, res) => {
 
 ///////////////////////////////////////////Message Type Text///////////////////////////////////////////
   else if(type === 'text' && eventsType === 'message'){
+    switch(text){
+      case check_conditions(text, starterWeatherMenu) === true && text : weatherMenuCarouselTemplate(sender) 
+    }
   if (text === greetingWord) {
     
     sendGreetingMessage(sender, text)
   }
-  else if (text === starterWeatherMenu ) {
-    weatherMenuCarouselTemplate(sender)
-  }
+  
   else if (text === 'weathertoday' || text === 'พยากรณ์อากาศประจำวัน') {
     isDailyWeather = true;
     weatherDailyMenuCarouselTemplate(sender)
