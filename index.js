@@ -269,6 +269,7 @@ app.post('/webhook', (req, res) => {
         console.log('spec', 'asd')
         weatherMenuCarouselTemplate(sender)
       }
+    }
     console.log('text from user before compare with Switch case', text)
     if (text in wordStarterWeatherMenu ) {
       console.log('1', '1')
