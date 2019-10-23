@@ -264,7 +264,7 @@ app.post('/webhook', (req, res) => {
       } 
       case check_conditions(text, greetingWord) === true && text :{
         isSwitchCase = true;
-        sendGreetingMessage(sender) 
+        sendGreetingMessage(sender, text) 
 
       } 
     }
