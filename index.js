@@ -284,6 +284,10 @@ app.post('/webhook', (req, res) => {
     quickReplyWeatherDailbyZipCode(sender)
     isGeoDaily = false;
   }
+  else if (text === 'ตั้งเวลาแจ้งเตือนฝนตก'){
+    quickReplyWarningForecast(sender)
+    
+  }
   else if( text === 'พยากรณ์อากาศ 5 วัน'){
     a5dayMenuCarouselTemplate(sender)
   }
@@ -339,6 +343,11 @@ function weatherMenuCarouselTemplate (sender, text) {
               type: "message",
               label: "พยากรณ์อากาศ 5 วัน",
               text: "พยากรณ์อากาศ 5 วัน"
+            },
+            {
+              type: "message",
+              label: "ตั้งแจ้งเตือนฝนตก",
+              text: "ตั้งเวลาแจ้งเตือนฝนตก"
             }
           ]
         }
@@ -465,6 +474,46 @@ function a5dayMenuCarouselTemplate (sender, linkImg) {
     if (body) console.log(body)
   })
 } 
+
+function quickReplyWarningForecast (sender) {
+  let data = {
+    to: sender,
+    messages: [
+      {
+        type: "text",
+        text: "กรุณาเลือกเวลาที่ต้องการตั้งเวลาแจ้งเตือนฝนตกล่วงหน้า",
+        quickReply: {
+          items: [
+            {
+              "type":"datetimepicker",
+              "label":"เลือกวันที่",
+              "data":"storeId=12345",
+              "mode":"datetime",
+              "initial":"2019-10-25t00:00",
+              "max":"2019-12-30t23:59",
+              "min":"2019-10-25t00:00"
+            }
+          ]
+        }
+      }
+    ]
+  }
+  request({
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer '+CH_ACCESS_TOKEN+''
+    },
+    url: 'https://api.line.me/v2/bot/message/push',
+    method: 'POST',
+    body: data,
+    json: true
+  }, function (err, res, body) {
+    if (err) console.log('error')
+    if (res) console.log('quickReplyWeatherDailbyRestrict : POST || Result : success')
+    if (body) console.log(body)
+  })
+} 
+
 
 //////////////////////////////////////////////////Quick Reply for Daily Weather by Destrict///////////////////////////////////////
 
