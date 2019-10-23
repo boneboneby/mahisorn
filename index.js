@@ -13,7 +13,7 @@ let is5daysWeather = false;
 let isRestrictDaily = false;
 let isGeoDaily = false;
 let isGeo5days = false;
-let isSwitchCase = false;
+let isForLop = false;
 let isGreetingMsgT1 = false;
 let isGreetingMsgT2 = false;
 
@@ -175,7 +175,7 @@ function requestImg (sender , userLat , userLon){
 
 
 ////////////////////////////////////////////////Group word////////////////////////////////////////////////////////////
-var weatherToday = ["อากาศวันนี้",  , "สภาพอากาศวันนี้" ];
+var weatherToday = ["อากาศวันนี้",  , "สภาพอากาศวันนี้" , "พยากรณ์อากาศประจำวัน" ];
 var weatherTodayLocal = ["มื้อนี้เป็นหยังอากาศ", "อากาศมื้อนี้เป็นจั่งใด๋"]
 var isTodayRain = ["วันนี้ฝนตกมั้ย", "วันนี้ฝนตกป่าว" , "มื้อนี่ฝนตกบ่"];
 var wordGreeting = ["สวัสดี","สวัสดีจ้า" , "สวัสดีครับ" , "สวัสดีค่ะ"];
@@ -209,10 +209,9 @@ app.set('port', (process.env.PORT || 4000))
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
 app.post('/webhook', (req, res) => {
-  isGreetingMsgT1 = false;
-  isGreetingMsgT2 = false;
+  
   isDailyWeather = false;
-  isSwitchCase = false;
+  isForLop = false;
   var type = req.body.events[0].message.type
   var eventsType = req.body.events[0].type
   if(type === 'text'){
@@ -248,23 +247,29 @@ app.post('/webhook', (req, res) => {
   else if(type === 'text' && eventsType === 'message'){
     for ( i=0;i  < wordStarterWeatherMenu.length ;  i++ ){
       if (wordStarterWeatherMenu[i]==text) {
-        
         weatherMenuCarouselTemplate(sender)
+        break;
         }
       }
     for ( i=0;i  < weatherToday.length ;  i++ ){
       if (weatherToday[i]==text) {
+        
         weatherDailyMenuCarouselTemplate(sender)
+        break;
         }
       }
     for ( i=0;i  < wordGreeting.length ;  i++ ){
       if (wordGreeting[i]==text) {
+       
         sendGreetingMessage(sender)
+        break;
         }
       }
     for ( i=0;i  < wordDailyByZipCode.length ;  i++ ){
       if (wordDailyByZipCode[i]==text) {
+        
         weatherDailyByDestrict(sender,text)
+        break;
         }
       }
     
