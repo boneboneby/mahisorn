@@ -199,24 +199,6 @@ let randomGreetingNum = 0;
 let greetingMsg = ''
 ////////////////////////////////////////////////String Method//////////////////////////////////////////////////////////////
 
-function check_conditions(text, array) {
-  let find = false;
-  array.forEach(element => {
-    if (text.search(element) !== -1) {
-      find = text;
-    }
-  });
-
-  if (find) {
-    return true;
-  } else {
-    return false;
-  }
-}
-String.prototype.replaceAll = function(str1, str2, ignore) 
-{
-    return this.replace(new RegExp(str1.replace(/([\/\,\!\\\^\$\{\}\[\]\(\)\.\*\+\?\|\<\>\-\&])/g,"\\$&"),(ignore?"gi":"g")),(typeof(str2)=="string")?str2.replace(/\$/g,"$$$$"):str2);
-}
 
 ////////////////////////////////////////////////String Method//////////////////////////////////////////////////////////////
 
@@ -266,64 +248,36 @@ app.post('/webhook', (req, res) => {
   else if(type === 'text' && eventsType === 'message'){
     for ( i=0;i  < wordStarterWeatherMenu.length ;  i++ ){
       if (wordStarterWeatherMenu[i]==text) {
-        console.log('spec', 'asd')
+        
         weatherMenuCarouselTemplate(sender)
+        }
       }
-    }
-    console.log('text from user before compare with Switch case', text)
-    if (text in wordStarterWeatherMenu ) {
-      console.log('1', '1')
-      weatherMenuCarouselTemplate(sender)
-    } else if (text in {wordStarterWeatherMenu} ) {
-      console.log('2', '2')
-      weatherMenuCarouselTemplate(sender)
-    }
-    switch(text){
-      
-      // case check_conditions(text, wordStarterWeatherMenu) === true && text : {
-      //   isSwitchCase = true
-      //   weatherMenuCarouselTemplate(sender);
-      //   break;
-      // }
-      
-      case check_conditions(text, wordGreeting) === true && text :{
-        isSwitchCase = true
-        sendGreetingMessage(sender, text) 
-        break;
+    for ( i=0;i  < weatherToday.length ;  i++ ){
+      if (weatherToday[i]==text) {
+        weatherDailyMenuCarouselTemplate(sender)
+        }
       }
-      case check_conditions(text, weatherToday || wordMenuDailyWeather) === true && text :{
-        isSwitchCase = true
-        isDailyWeather = true
-        weatherDailyMenuCarouselTemplate(sender, text) 
-        break;
+    for ( i=0;i  < wordGreeting.length ;  i++ ){
+      if (wordGreeting[i]==text) {
+        sendGreetingMessage(sender)
+        }
       }
-      case check_conditions(text, wordMenuForecastWeather) === true && text :{
-        isSwitchCase = true
-        a5dayMenuCarouselTemplate(sender, text) 
-        break;
+    for ( i=0;i  < wordDailyByZipCode.length ;  i++ ){
+      if (wordDailyByZipCode[i]==text) {
+        weatherDailyByDestrict(sender,text)
+        }
       }
-      case check_conditions(text, wordGreeting) === true && text :{
-        isSwitchCase = true
-        sendGreetingMessage(sender, text) 
-        break;
-      }
-      case check_conditions(text, wordDailyByZipCode) === true && text :{
-        isSwitchCase = true;
-        weatherDailyByDestrict(sender, text) 
-        break;
-      }
-    }
-  
-  
-  
+    
+    
   if (text === 'แผ่นดินทอง' ) {
     pandinthongCarousel(sender)
   }
-  else if (text == 'พยากรณ์อากาศตามเขต'){
+  else if (text === 'พยากรณ์อากาศตามเขต'){
     quickReplyWeatherDailbyRestrict(sender)
   }
-  
-  
+  else if( text === 'พยากรณ์อากาศ 5 วัน'){
+    a5dayMenuCarouselTemplate(sender)
+  }
   else if (text === 'สินเชื่อ ธกส.' || text === 'สินเชื่อ' ) {
     creditBAAC(sender)
   }
@@ -575,11 +529,11 @@ function weatherDailyByDestrict (sender, text) {
   let eachCaseDestrict = '';
   if(text === "พยากรณ์อากาศประจำวันเขตลาดพร้าว" || text === "พยากรณ์อากาศประจำวันเขตคันนายาว") eachCaseDestrict = '10230'
   
-  else if(text == "พยากรณ์อากาศประจำวันเขตดินแดง") eachCaseDestrict = '10400'
+  else if(text === "พยากรณ์อากาศประจำวันเขตดินแดง") eachCaseDestrict = '10400'
 
-  else if(text == "พยากรณ์อากาศประจำวันเขตสาทร") eachCaseDestrict = '10120'
+  else if(text === "พยากรณ์อากาศประจำวันเขตสาทร") eachCaseDestrict = '10120'
 
-  else if(text == "พยากรณ์อากาศประจำวันเขตตลิ่งชัน") eachCaseDestrict = '10170'
+  else if(text === "พยากรณ์อากาศประจำวันเขตตลิ่งชัน") eachCaseDestrict = '10170'
 
 
   let urlDailyByRestrici = `${dailyForecastByDestrictUrl}${eachCaseDestrict},th`
