@@ -209,8 +209,6 @@ app.set('port', (process.env.PORT || 4000))
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
 app.post('/webhook', (req, res) => {
-  isGeoDaily = false;
-  isDailyWeather = false;
   isForLop = false;
   var type = req.body.events[0].message.type
   var eventsType = req.body.events[0].type
@@ -234,7 +232,7 @@ app.post('/webhook', (req, res) => {
   
 
 ///////////////////////////////////////////Message Type Location///////////////////////////////////////////
-  if(type === 'location' && eventsType === 'message' && isDailyWeather){
+  if(type === 'location' && isDailyWeather){
     if(isGeoDaily){
       geoDaily(sender , userLat , userLon )
       isGeoDaily = false;
