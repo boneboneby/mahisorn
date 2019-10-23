@@ -485,13 +485,16 @@ function quickReplyWarningForecast (sender) {
         quickReply: {
           items: [
             {
-              "type":"datetimepicker",
-              "label":"เลือกวันที่",
-              "data":"storeId=12345",
-              "mode":"datetime",
-              "initial":"2019-10-25t00:00",
-              "max":"2019-12-30t23:59",
-              "min":"2019-10-25t00:00"
+              type: "action",
+              action: {
+              type:"datetimepicker",
+              label:"เลือกวันที่",
+              data:"storeId=12345",
+              mode:"datetime",
+              initial:"2019-10-25t00:00",
+              max:"2019-12-30t23:59",
+              min:"2019-10-25t00:00"
+              }
             }
           ]
         }
