@@ -210,8 +210,11 @@ app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
 app.post('/webhook', (req, res) => {
   isForLop = false;
-  var type = req.body.events[0].message.type
   var eventsType = req.body.events[0].type
+  console.log('eventType', eventsType)
+  if(eventsType === messages){
+  var type = req.body.events[0].message.type
+  
   if(type === 'text'){
     var text = req.body.events[0].message.text;
     console.log('text', text)
@@ -308,6 +311,7 @@ app.post('/webhook', (req, res) => {
   
 }
   res.sendStatus(200)
+}
 })
 ////////////////////////////////////////////////User Message Invoke////////////////////////////////////////////////////////
 
