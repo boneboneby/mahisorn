@@ -271,7 +271,7 @@ app.post('/webhook', (req, res) => {
     for ( i=0;i  < wordDailyByZipCode.length ;  i++ ){
       if (wordDailyByZipCode[i]==text) {
         isForLop = true;
-        weatherDailyByDestrict(sender,text)
+        weatherDailyByZipCode(sender,text)
         break;
         }
       }
@@ -280,8 +280,8 @@ app.post('/webhook', (req, res) => {
   if (text === 'แผ่นดินทอง' ) {
     pandinthongCarousel(sender)
   }
-  else if (text === 'พยากรณ์อากาศตามเขต'){
-    quickReplyWeatherDailbyRestrict(sender)
+  else if (text === 'พยากรณ์อากาศตามรหัสไปรษณีย์'){
+    quickReplyWeatherDailbyZipCode(sender)
     isGeoDaily = false;
   }
   else if( text === 'พยากรณ์อากาศ 5 วัน'){
@@ -385,7 +385,7 @@ function weatherDailyMenuCarouselTemplate (sender, text) {
             {
               type: "message",
               label: "เลือกเขต",
-              text: "พยากรณ์อากาศตามเขต"
+              text: "พยากรณ์อากาศตามรหัสไปรษณีย์"
             },
             {
               type: "uri",
@@ -473,54 +473,47 @@ function a5dayMenuCarouselTemplate (sender, linkImg) {
 
 //////////////////////////////////////////////////Quick Reply for Daily Weather by Destrict///////////////////////////////////////
 
-function quickReplyWeatherDailbyRestrict (sender, text) {
+function quickReplyWeatherDailbyZipCode (sender, text) {
   let data = {
     to: sender,
     messages: [
       {
         type: "text",
-        text: "กรุณาเลือกเขตเพื่อทำรายการ",
+        text: "กรุณาเลือกรหัสไปรษณีย์เพื่อทำรายการ",
         quickReply: {
           items: [
             {
               "type": "action",
               "action": {
                 "type": "message",
-                "label": "ลาดพร้าว",
-                "text" : "พยากรณ์อากาศประจำวันเขตลาดพร้าว" //10230
+                "label": "10230",
+                "text" : "พยากรณ์อากาศประจำวันรหัสไปรษณีย์ 10230" //10230
               }
             },
             {
               "type": "action",
               "action": {
                 "type": "message",
-                "label": "ดินแดง",
-                "text" : "พยากรณ์อากาศประจำวันเขตดินแดง" //10400
+                "label": "10400",
+                "text" : "พยากรณ์อากาศประจำวันรหัสไปรษณีย์ 10400" //10400
               }
             },
             {
               "type": "action",
               "action": {
                 "type": "message",
-                "label": "สาทร",
-                "text" : "พยากรณ์อากาศประจำวันเขตสาทร" //10120
+                "label": "10120",
+                "text" : "พยากรณ์อากาศประจำวันรหัสไปรษณีย์ 10120" //10120
               }
             },
             {
               "type": "action",
               "action": {
                 "type": "message",
-                "label": "ตลิ่งชัน",
-                "text" : "พยากรณ์อากาศประจำวันเขตตลิ่งชัน" //10170
+                "label": "10170",
+                "text" : "พยากรณ์อากาศประจำวันรหัสไปรษณีย์ 10170" //10170
               }
-            },
-            {
-              "type": "action",
-              "action": {
-                "type": "message",
-                "label": "คันนายาว",
-                "text" : "พยากรณ์อากาศประจำวันเขตคันนายาว" //10230
-              }
+            
             }
           ]
         }
@@ -547,17 +540,17 @@ function quickReplyWeatherDailbyRestrict (sender, text) {
 
 //////////////////////////////////////////////////Daily Weather by Destrict///////////////////////////////////////////////
 
-function weatherDailyByDestrict (sender, text) {
+function weatherDailyByZipCode (sender, text) {
   let eachCaseDestrict = '';
-  if(text === "พยากรณ์อากาศประจำวันเขตลาดพร้าว" || text === "พยากรณ์อากาศประจำวันเขตคันนายาว") eachCaseDestrict = '10230'
+  if(text === "พยากรณ์อากาศประจำวันรหัสไปรษณีย์ 10230") eachCaseDestrict = '10230'
   
-  else if(text === "พยากรณ์อากาศประจำวันเขตดินแดง") eachCaseDestrict = '10400'
+  else if(text === "พยากรณ์อากาศประจำวันรหัสไปรษณีย์ 10400") eachCaseDestrict = '10400'
 
-  else if(text === "พยากรณ์อากาศประจำวันเขตสาทร") eachCaseDestrict = '10120'
+  else if(text === "พยากรณ์อากาศประจำวันรหัสไปรษณีย์ 10120") eachCaseDestrict = '10120'
 
-  else if(text === "พยากรณ์อากาศประจำวันเขตตลิ่งชัน") eachCaseDestrict = '10170'
+  else if(text === "พยากรณ์อากาศประจำวันรหัสไปรษณีย์ 10170") eachCaseDestrict = '10170'
 
-
+  
   let urlDailyByRestrici = `${dailyForecastByDestrictUrl}${eachCaseDestrict},th`
   request(urlDailyByRestrici, function (error, response, body) {
     if (!error && response.statusCode == 200) {
