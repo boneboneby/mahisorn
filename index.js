@@ -271,11 +271,11 @@ app.post('/webhook', (req, res) => {
     }
     switch(text){
       
-      case check_conditions(text, wordStarterWeatherMenu) === true && text : {
-        isSwitchCase = true
-        weatherMenuCarouselTemplate(sender);
-        break;
-      }
+      // case check_conditions(text, wordStarterWeatherMenu) === true && text : {
+      //   isSwitchCase = true
+      //   weatherMenuCarouselTemplate(sender);
+      //   break;
+      // }
       
       case check_conditions(text, wordGreeting) === true && text :{
         isSwitchCase = true
