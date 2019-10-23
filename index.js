@@ -181,7 +181,7 @@ var isTodayRain = ["วันนี้ฝนตกมั้ย", "วันน�
 var wordGreeting = ["สวัสดี","สวัสดีจ้า" , "สวัสดีครับ" , "สวัสดีค่ะ"];
 var greetingWordLocal = [ "เป็นจั่งใด๋" ]
 var howToUse = ["พยากรณ์ซิได๋บุ่","ทำหยังได้บ้าง"]
-var wordDailyByZipCode = ["พยากรณ์อากาศประจำวันเขตลาดพร้าว","พยากรณ์อากาศประจำวันเขตดินแดง","พยากรณ์อากาศประจำวันเขตตลิ่งชัน","พยากรณ์อากาศประจำวันเขตคันนายาว", "พยากรณ์อากาศประจำวันเขตสาทร"]
+var wordDailyByZipCode = ["พยากรณ์อากาศประจำวันรหัสไปรษณีย์ 10230","พยากรณ์อากาศประจำวันรหัสไปรษณีย์ 10400","พยากรณ์อากาศประจำวันรหัสไปรษณีย์ 10120","พยากรณ์อากาศประจำวันรหัสไปรษณีย์ 10170"]
 
 //Carousel invoke
 var wordStarterWeatherMenu = ["พยากรณ์อากาศ"]
@@ -209,7 +209,7 @@ app.set('port', (process.env.PORT || 4000))
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
 app.post('/webhook', (req, res) => {
-  
+  isGeoDaily = false;
   isDailyWeather = false;
   isForLop = false;
   var type = req.body.events[0].message.type
@@ -238,6 +238,7 @@ app.post('/webhook', (req, res) => {
     if(isGeoDaily){
       geoDaily(sender , userLat , userLon )
       isGeoDaily = false;
+      isDailyWeather = false;
     }
     //requestImg(sender , userLat , userLon)
 
@@ -256,6 +257,7 @@ app.post('/webhook', (req, res) => {
     for ( i=0;i  < weatherToday.length ;  i++ ){
       if (weatherToday[i]==text) {
         isGeoDaily = true;
+        isDailyWeather = true;
         isForLop = true;
         weatherDailyMenuCarouselTemplate(sender)
         break;
@@ -384,7 +386,7 @@ function weatherDailyMenuCarouselTemplate (sender, text) {
         actions: [
             {
               type: "message",
-              label: "เลือกเขต",
+              label: "เลือกรหัสไปรษณีย์",
               text: "พยากรณ์อากาศตามรหัสไปรษณีย์"
             },
             {
@@ -392,12 +394,7 @@ function weatherDailyMenuCarouselTemplate (sender, text) {
               label: "ส่งที่อยู่",
               uri: "line://nv/location"
             }
-            ,
-            {
-              type: "message",
-              label: "test",
-              text: "default"
-            }
+            
           ]
         }
       }
