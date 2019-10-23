@@ -266,7 +266,7 @@ app.post('/webhook', (req, res) => {
   else if(type === 'text' && eventsType === 'message'){
     
     console.log('text from user before compare with Switch case', text)
-    if (text === wordStarterWeatherMenu ) {
+    if (text === [wordStarterWeatherMenu] ) {
       weatherMenuCarouselTemplate(sender)
     }
     switch(text){
