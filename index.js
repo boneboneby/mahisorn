@@ -707,7 +707,7 @@ function sendGreetingMessage (sender, text) {
     messages: [
       {
         type: 'text',
-        text: greetingMsg
+        text: greetingMsg + 'test'
       }
     ]
   }
