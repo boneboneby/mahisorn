@@ -23,14 +23,8 @@ var usersRef = ref.child("users");
 //   }
 // });
 
-usersRef.child("alanisawesome").set({
-  date_of_birth: "June 23, 1912",
-  full_name: "Alan Turing"
-});
-usersRef.child("gracehop").set({
-  date_of_birth: "December 9, 1906",
-  full_name: "Grace Hopper"
-});
+usersRef.child("alanisawesome").remove();
+usersRef.child("gracehop").remove();
 
 
 
