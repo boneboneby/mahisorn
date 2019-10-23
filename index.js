@@ -264,6 +264,7 @@ app.post('/webhook', (req, res) => {
 
 ///////////////////////////////////////////Message Type Text///////////////////////////////////////////
   else if(type === 'text' && eventsType === 'message'){
+    console.log('text from user before compare with Switch case', text)
     switch(text){
       
       case check_conditions(text, wordStarterWeatherMenu) === true && text :{
