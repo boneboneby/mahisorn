@@ -27,7 +27,8 @@ const OPENWEATHER_KEY2 = "7e000fadaa5a64cc92c3a6a478e2e193" ;
 const OPENWEATHER_API_Daily = "https://api.openweathermap.org/data/2.5/weather/";
 const OPENWEATHER_API_5days = "https://api.openweathermap.org/data/2.5/forecast/";
 
-const dailyForecastHeader = `${OPENWEATHER_API_Daily}?appid=${OPENWEATHER_KEY}&units=metric&type=accurate&zip=10230,th`
+
+const dailyForecastByDestrictUrl = `${OPENWEATHER_API_Daily}?appid=${OPENWEATHER_KEY}&units=metric&type=accurate&zip=`
 const fivedaysForecastHeader = `${OPENWEATHER_API_5days}?appid=${OPENWEATHER_KEY}&units=metric&type=accurate&zip=10230,th`
 const OpenWeatherMapDaily_BY_GEOHeader = `https://api.openweathermap.org/data/2.5/weather/?appid=686d2c96c7002be9b1e714457eac2caf&units=metric&type=accurate&`
 
@@ -177,14 +178,15 @@ function requestImg (sender , userLat , userLon){
 const weatherToday = ["อากาศวันนี้",  , "สภาพอากาศวันนี้" ];
 const weatherTodayLocal = ["มื้อนี้เป็นหยังอากาศ", "อากาศมื้อนี้เป็นจั่งใด๋"]
 const isTodayRain = ["วันนี้ฝนตกมั้ย", "วันนี้ฝนตกป่าว" , "มื้อนี่ฝนตกบ่"];
-const greetingWord = ["สวัสดี","สวัสดีจ้า" , "สวัสดีครับ" , "สวัสดีค่ะ"];
+const wordGreeting = ["สวัสดี","สวัสดีจ้า" , "สวัสดีครับ" , "สวัสดีค่ะ"];
 const greetingWordLocal = [ "เป็นจั่งใด๋" ]
 const howToUse = ["พยากรณ์ซิได๋บุ่","ทำหยังได้บ้าง"]
+const wordDailyByZipCode = ["พยากรณ์อากาศประจำวันเขตลาดพร้าว","พยากรณ์อากาศประจำวันเขตดินแดง","พยากรณ์อากาศประจำวันเขตตลิ่งชัน","พยากรณ์อากาศประจำวันเขตคันนายาว", "พยากรณ์อากาศประจำวันเขตสาทร"]
 
 //Carousel invoke
-const starterWeatherMenu = ["พยากรณ์อากาศ"]
-const menuDailyWeather = ["พยากรณ์อากาศประจำวัน"]
-const menuForecastWeather = ["พยากรณ์อากาศ 5 วัน"]
+const wordStarterWeatherMenu = ["พยากรณ์อากาศ"]
+const wordMenuDailyWeather = ["พยากรณ์อากาศประจำวัน"]
+const wordMenuForecastWeather = ["พยากรณ์อากาศ 5 วัน"]
 
 
 
@@ -226,6 +228,7 @@ app.use(bodyParser.json())
 app.post('/webhook', (req, res) => {
   isGreetingMsgT1 = false;
   isGreetingMsgT2 = false;
+  isDailyWeather = false;
   isSwitchCase = false;
   var type = req.body.events[0].message.type
   var eventsType = req.body.events[0].type
@@ -253,7 +256,7 @@ app.post('/webhook', (req, res) => {
     if(isGeoDaily){
       geoDaily(sender , userLat , userLon )
     }
-    requestImg(sender , userLat , userLon)
+    //requestImg(sender , userLat , userLon)
 
   }
 ///////////////////////////////////////////Message Type Location///////////////////////////////////////////
@@ -262,31 +265,45 @@ app.post('/webhook', (req, res) => {
   else if(type === 'text' && eventsType === 'message'){
     switch(text){
       
-      case check_conditions(text, starterWeatherMenu) === true && text :{
+      case check_conditions(text, wordStarterWeatherMenu) === true && text :{
         isSwitchCase = true;
         weatherMenuCarouselTemplate(sender) 
       } 
-      case check_conditions(text, greetingWord) === true && text :{
+      case check_conditions(text, wordGreeting) === true && text :{
         isSwitchCase = true;
         sendGreetingMessage(sender, text) 
 
       } 
+      case check_conditions(text, weatherToday || wordMenuDailyWeather) === true && text :{
+        isSwitchCase = true;
+        isDailyWeather = true;
+        weatherDailyMenuCarouselTemplate(sender, text) 
+
+      } 
+      case check_conditions(text, wordMenuForecastWeather) === true && text :{
+        isSwitchCase = true;
+        a5dayMenuCarouselTemplate(sender, text) 
+
+      } 
+      case check_conditions(text, wordGreeting) === true && text :{
+        isSwitchCase = true;
+        sendGreetingMessage(sender, text) 
+
+      }
+      case check_conditions(text, wordDailyByZipCode) === true && text :{
+        isSwitchCase = true;
+        weatherDailyByDestrict(sender, text) 
+
+      }  
     }
   
   
-  if (text === 'weathertoday' || text === 'พยากรณ์อากาศประจำวัน') {
-    isDailyWeather = true;
-    weatherDailyMenuCarouselTemplate(sender)
-  }
-  else if (text === 'พยากรณ์อากาศ 5 วัน' || text === 'พยากรณ์อากาศ5วัน' ) {
-    s5dayMenuCarouselTemplate(sender)
-  }
-  else if (text === 'พยากรณ์อากาศ 5 วัน ทุกๆ 3 ชม.') {
-    tesApi5days_3hs2(sender)
-  }
   
-  else if (text === 'แผ่นดินทอง' ) {
+  if (text === 'แผ่นดินทอง' ) {
     pandinthongCarousel(sender)
+  }
+  else if (text == 'พยากรณ์อากาศตามเขต'){
+    quickReplyWeatherDailbyRestrict(sender)
   }
   
   else if (text === 'สินเชื่อ ธกส.' || text === 'สินเชื่อ' ) {
@@ -364,12 +381,288 @@ function weatherMenuCarouselTemplate (sender, text) {
   })
 } 
 
+function weatherDailyMenuCarouselTemplate (sender, text) {
+  let data = {
+    to: sender,
+    messages: [
+      {
+        type: "template",
+        altText: "This is a buttons template",
+        template: {
+        type: "buttons",
+        thumbnailImageUrl: "https://sv1.picz.in.th/images/2019/10/21/cIocp0.jpg",
+        imageAspectRatio: "rectangle",
+        imageSize: "cover",
+        imageBackgroundColor: "#FFFFFF",
+        title: "พยากรณ์อากาศประจำวัน",
+        text: "กรุณาเลือกรายการ",
+        defaultAction: {
+            type: "uri",
+            label: "View detail",
+            uri: "https://www.google.com"
+        },
+        actions: [
+            {
+              type: "message",
+              label: "เลือกเขต",
+              text: "พยากรณ์อากาศตามเขต"
+            },
+            {
+              type: "uri",
+              label: "ส่งที่อยู่",
+              uri: "line://nv/location"
+            }
+            ,
+            {
+              type: "message",
+              label: "test",
+              text: "default"
+            }
+          ]
+        }
+      }
+    ]
+  }
+  request({
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer '+CH_ACCESS_TOKEN+''
+    },
+    url: 'https://api.line.me/v2/bot/message/push',
+    method: 'POST',
+    body: data,
+    json: true
+  }, function (err, res, body) {
+    if (err) console.log('error')
+    if (res) console.log('weatherMenuCarouselTemplate : POST || Result : success')
+    if (body) console.log(body)
+  })
+} 
+
+function a5dayMenuCarouselTemplate (sender, linkImg) {
+  let data = {
+    to: sender,
+    messages: [
+      {
+        type: "template",
+    altText: "This is a buttons template",
+    template: {
+        type: "buttons",
+        thumbnailImageUrl: "https://sv1.picz.in.th/images/2019/10/21/cIocp0.jpg",
+        imageAspectRatio: "rectangle",
+        imageSize: "cover",
+        imageBackgroundColor: "#FFFFFF",
+        title: "พยากรณ์อากาล่วงหน้า 5 วัน",
+        text: "กรุณาเลือกรายการ",
+        defaultAction: {
+            type: "uri",
+            label: "View detail",
+            uri: "https://www.google.com"
+        },
+        actions: [
+            {
+              type: "message",
+              label: "ข้อความ",
+              text: "พยากรณ์อากาศ 5 วัน"
+            },
+            {
+              type: "message",
+              label: "รูปภาพ",
+              text: linkImg
+            }
+          ]
+        }
+      }
+    ]
+  }
+  request({
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer '+CH_ACCESS_TOKEN+''
+    },
+    url: 'https://api.line.me/v2/bot/message/push',
+    method: 'POST',
+    body: data,
+    json: true
+  }, function (err, res, body) {
+    if (err) console.log('error')
+    if (res) console.log('s5dayMenuCarouselTemplate : POST || Result : success')
+    if (body) console.log(body)
+  })
+} 
+
+//////////////////////////////////////////////////Quick Reply for Daily Weather by Destrict///////////////////////////////////////
+
+function quickReplyWeatherDailbyRestrict (sender, text) {
+  let data = {
+    to: sender,
+    messages: [
+      {
+        "type": "text",
+        "text": "Hello Quick Reply!",
+        "quickReply": {
+          "items": [
+              {
+              type: "message",
+              label: "เขตลาดพร้าว",
+              text: "พยากรณ์อากาศประจำวันเขตลาดพร้าว" //10230
+              },
+              {
+              type: "message",
+              label: "เขตดินแดง",
+              text: "พยากรณ์อากาศประจำวันเขตดินแดง" //10400
+              },
+              {
+                type: "message",
+                label: "เขตสาทร",
+                text: "พยากรณ์อากาศประจำวันเขตสาทร" //10120
+              },
+              {
+                type: "message",
+                label: "เขตตลิ่งชัน",
+                text: "พยากรณ์อากาศประจำวันเขตตลิ่งชัน" //10170
+              },
+              {
+                type: "message",
+                label: "เขตคันนายาว",
+                text: "พยากรณ์อากาศประจำวันเขตคันนายาว" //10230
+              }
+         
+            ]
+          }
+        }
+       ]
+    }
+  request({
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer '+CH_ACCESS_TOKEN+''
+    },
+    url: 'https://api.line.me/v2/bot/message/push',
+    method: 'POST',
+    body: data,
+    json: true
+  }, function (err, res, body) {
+    if (err) console.log('error')
+    if (res) console.log('weatherMenuCarouselTemplate : POST || Result : success')
+    if (body) console.log(body)
+  })
+} 
+
+//////////////////////////////////////////////////Quick Reply for Daily Weather by Destrict///////////////////////////////////////
+
+//////////////////////////////////////////////////Daily Weather by Destrict///////////////////////////////////////////////
+
+function weatherDailyByDestrict (sender, text) {
+
+  if(text === "พยากรณ์อากาศประจำวันเขตลาดพร้าว" || text === "พยากรณ์อากาศประจำวันเขตคันนายาว") eachCaseDestrict = '10230'
+  
+  else if(text == "พยากรณ์อากาศประจำวันเขตดินแดง") eachCaseDestrict = '10400'
+
+  else if(text == "พยากรณ์อากาศประจำวันเขตสาทร") eachCaseDestrict = '10120'
+
+  else if(text == "พยากรณ์อากาศประจำวันเขตตลิ่งชัน") eachCaseDestrict = '10170'
 
 
+  let urlDailyByRestrici = `${dailyForecastByDestrictUrl}${eachCaseDestrict},th`
+  request(urlDailyByRestrici, function (error, response, body) {
+    if (!error && response.statusCode == 200) {
+      body = JSON.parse(body);
+      console.log('Request api success ')
+      console.log('The response body after parse => ',body)
+    
+                
+  let cityName = body.name;
+  if(cityName ===  'Lat Phrao' ) cityName = "ลาดพร้าว";
+  
+  else if (cityName ===  'ฟหกฟหก' ) cityName = "ดินแดง";
+
+  else if (cityName ===  'ฟหกฟหก' ) cityName = "สาทร";
+
+  else if (cityName ===  'ฟหกฟหก' ) cityName = "ตลิ่งชัน";
+
+  let weather = body.weather[0].description;
+  if(weather === 'light intensity drizzle'){
+    weather = "ฝนตกแดดออก"
+  }
+  else if (weather === 'scattered clouds'){
+    weather = "เมฆฝนฟ้าคะนองกระจายตัว"
+  }
+  
+  console.log('weather', weather)
+  const dMsg = `พยากรณ์อากาศประจำวัน\nเขต: ${cityName}`;
+  const dMsg2 = `อุณภูมิ:  ${body.main.temp} °C \nสภาพอากาศ: ${weather}  \nความชื้น : ${body.main.humidity}% \nทิศทางลม : ${body.wind.deg}° \n ความเร็วลม : ${body.wind.speed} กม./ชม. `
+  
+
+  return pushWeatherDaily( dMsg ,dMsg2 , sender);
+    } else console.log('Request url failed', urlDailyByRestrici)
+  })
+}
+
+const pushWeatherDaily = async (dMsg ,dMsg2  , userId) => {
+  request.post({
+    uri: `${LINE_MESSAGING_API}/push`,
+    headers: LINE_HEADER,
+    body: JSON.stringify({
+      to: userId,
+      messages: [{ type: "text", text: dMsg }, { type: "text", text: dMsg2 }]
+    })
+  });
+  return res.status(200).send({ message: `Push: ${msg}` });
+};
+
+//////////////////////////////////////////////////Daily Weather by Destrict///////////////////////////////////////////////
 
 
+//////////////////////////////////////////////////Daily Weather by Geo/////////////////////////////////////////////////////////////
 
-
+function geoDaily (sender , userLat , userLon) {
+  let DAILYWEATHER_BY_GEO = `https://api.openweathermap.org/data/2.5/weather/?lat=${userLat}&lon=${userLon}&appid=686d2c96c7002be9b1e714457eac2caf&units=metric&type=accurate`;
+    request(DAILYWEATHER_BY_GEO, function (error, response, body) {
+      if (!error && response.statusCode == 200) {
+        body = JSON.parse(body);
+        console.log('Request api success ')
+        console.log('The response body after parse => ',body)
+      
+        
+    // let res = response;
+    let cityName = body.name;
+    if(cityName ===  'Lat Phrao' ) {
+      cityName = "ลาดพร้าว";
+    }
+  
+    let weather = body.weather[0].description;
+    if(weather === 'light intensity drizzle'){
+      weather = "ฝนตกแดดออก"
+    }
+    else if (weather === 'scattered clouds'){
+      weather = "เมฆฝนฟ้าคะนองกระจายตัว"
+    }
+   
+    console.log('weather', weather)
+    const dMsg = `พยากรณ์อากาศประจำวัน\nเขต: ${cityName}`;
+    const dMsg2 = `อุณภูมิ:  ${body.main.temp} °C \n สภาพอากาศ: ${weather}  \n ความชื้น : ${body.main.humidity}% \n ทิศทางลม : ${body.wind.deg}° \n ความเร็วลม : ${body.wind.speed} กม./ชม. `
+    
+    return pushGeoWeatherDaily( dMsg ,dMsg2 , sender);
+      }else if (error){
+        console.log('Request api ERROR ')
+      }
+    })
+  }
+  
+  const pushGeoWeatherDaily = async (dMsg ,dMsg2  , userId) => {
+    request.post({
+      uri: `${LINE_MESSAGING_API}/push`,
+      headers: LINE_HEADER,
+      body: JSON.stringify({
+        to: userId,
+        messages: [{ type: "text", text: dMsg }, { type: "text", text: dMsg2 }]
+      })
+    });
+    return res.status(200).send({ message: `Push: ${msg}` });
+  };
+  
+//////////////////////////////////////////////////Daily Weather by Geo/////////////////////////////////////////////////////////////
 
 
 
