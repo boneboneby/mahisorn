@@ -680,7 +680,7 @@ function groupCredit (sender, text) {
 } 
 
 function sendGreetingMessage (sender, text) {
-  randomGreetingNum = getRandomInt(3);
+  randomGreetingNum = getRandomInt(2);
   let greetingMsg = "";
   if (text === weatherToday){
     if(randomGreetingNum == 0){
