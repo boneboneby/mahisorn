@@ -10,6 +10,7 @@ const https = require('https')
 
 let isDailyWeather = false;
 let is5daysWeather = false;
+let isRestrictDaily = false;
 let isGeoDaily = false;
 let isGeo5days = false;
 
@@ -224,15 +225,17 @@ app.post('/webhook', (req, res) => {
   var eventsType = req.body.events[0].type
   if(type === 'text'){
     var text = req.body.events[0].message.text;
+    console.log('text', text)
   }
   else if(type === 'location'){
     var userLat = req.body.events[0].message.latitude
     var userLon = req.body.events[0].message.longitude
+    console.log('lat', userLat)
+    console.log('lon', userLon)
   }
-  console.log('text', text)
+  
   console.log('type', type)
-  console.log('lat', userLat)
-  console.log('lon', userLon)
+ 
   var sender = req.body.events[0].source.userId
   var replyToken = req.body.events[0].replyToken
   console.log("Message from User : "+ text + " || UserId : " + sender + " || repToken : "+ replyToken)
@@ -295,7 +298,57 @@ app.post('/webhook', (req, res) => {
 
 ////////////////////////////////////////////////Function handle User Message//////////////////////////////////////////////
 
-
+function weatherMenuCarouselTemplate (sender, text) {
+  let data = {
+    to: sender,
+    messages: [
+      {
+        type: "template",
+        altText: "This is a buttons template",
+        template: {
+        type: "buttons",
+        thumbnailImageUrl: "https://sv1.picz.in.th/images/2019/10/21/cIocp0.jpg",
+        imageAspectRatio: "rectangle",
+        imageSize: "cover",
+        imageBackgroundColor: "#FFFFFF",
+        title: "พยากรณ์อากาศ",
+        text: "กรุณาเลือกรายการ",
+        defaultAction: {
+            type: "uri",
+            label: "View detail",
+            uri: "https://www.google.com"
+        },
+        actions: [
+            {
+              type: "message",
+              label: "พยากรณ์อากาศประจำวัน",
+              text: "พยากรณ์อากาศประจำวัน"
+            },
+            {
+              type: "message",
+              label: "พยากรณ์อากาศ 5 วัน",
+              text: "พยากรณ์อากาศ 5 วัน"
+            }
+          ]
+        }
+      }
+    ]
+  }
+  request({
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer '+CH_ACCESS_TOKEN+''
+    },
+    url: 'https://api.line.me/v2/bot/message/push',
+    method: 'POST',
+    body: data,
+    json: true
+  }, function (err, res, body) {
+    if (err) console.log('error')
+    if (res) console.log('weatherMenuCarouselTemplate : POST || Result : success')
+    if (body) console.log(body)
+  })
+} 
 
 
 
