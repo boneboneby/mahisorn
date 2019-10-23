@@ -475,41 +475,53 @@ function quickReplyWeatherDailbyRestrict (sender, text) {
     to: sender,
     messages: [
       {
-        "type": "text",
-        "text": "Hello Quick Reply!",
         "quickReply": {
           "items": [
-              {
-              type: "message",
-              label: "เขตลาดพร้าว",
-              text: "พยากรณ์อากาศประจำวันเขตลาดพร้าว" //10230
-              },
-              {
-              type: "message",
-              label: "เขตดินแดง",
-              text: "พยากรณ์อากาศประจำวันเขตดินแดง" //10400
-              },
-              {
-                type: "message",
-                label: "เขตสาทร",
-                text: "พยากรณ์อากาศประจำวันเขตสาทร" //10120
-              },
-              {
-                type: "message",
-                label: "เขตตลิ่งชัน",
-                text: "พยากรณ์อากาศประจำวันเขตตลิ่งชัน" //10170
-              },
-              {
-                type: "message",
-                label: "เขตคันนายาว",
-                text: "พยากรณ์อากาศประจำวันเขตคันนายาว" //10230
+            {
+              "type": "action",
+              "action": {
+                "type": "message",
+                "label": "ลาดพร้าว",
+                "text" : "พยากรณ์อากาศประจำวันเขตลาดพร้าว" //10230
               }
-         
-            ]
-          }
+            },
+            {
+              "type": "action",
+              "action": {
+                "type": "message",
+                "label": "ดินแดง",
+                "text" : "พยากรณ์อากาศประจำวันเขตดินแดง" //10400
+              }
+            },
+            {
+              "type": "action",
+              "action": {
+                "type": "message",
+                "label": "สาทร",
+                "text" : "พยากรณ์อากาศประจำวันเขตสาทร" //10120
+              }
+            },
+            {
+              "type": "action",
+              "action": {
+                "type": "message",
+                "label": "ตลิ่งชัน",
+                "text" : "พยากรณ์อากาศประจำวันเขตตลิ่งชัน" //10170
+              }
+            },
+            {
+              "type": "action",
+              "action": {
+                "type": "message",
+                "label": "คันนายาว",
+                "text" : "พยากรณ์อากาศประจำวันเขตคันนายาว" //10230
+              }
+            },
+          ]
         }
-       ]
-    }
+      }
+    ]
+  }
   request({
     headers: {
       'Content-Type': 'application/json',
@@ -521,7 +533,7 @@ function quickReplyWeatherDailbyRestrict (sender, text) {
     json: true
   }, function (err, res, body) {
     if (err) console.log('error')
-    if (res) console.log('weatherMenuCarouselTemplate : POST || Result : success')
+    if (res) console.log('quickReplyWeatherDailbyRestrict : POST || Result : success')
     if (body) console.log(body)
   })
 } 
