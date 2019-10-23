@@ -479,57 +479,49 @@ function quickReplyWeatherDailbyRestrict (sender, text) {
     messages: [
       {
         type: "text",
-        text: "Hello Quick Reply!",
+        text: "กรุณาเลือกเขตเพื่อทำรายการ",
         quickReply: {
           items: [
             {
-              type: "action",
-              action: {
-                type: "cameraRoll",
-                label: "Send photo"
+              "type": "action",
+              "action": {
+                "type": "message",
+                "label": "ลาดพร้าว",
+                "text" : "พยากรณ์อากาศประจำวันเขตลาดพร้าว" //10230
+              }
+            },
+            {
+              "type": "action",
+              "action": {
+                "type": "message",
+                "label": "ดินแดง",
+                "text" : "พยากรณ์อากาศประจำวันเขตดินแดง" //10400
+              }
+            },
+            {
+              "type": "action",
+              "action": {
+                "type": "message",
+                "label": "สาทร",
+                "text" : "พยากรณ์อากาศประจำวันเขตสาทร" //10120
+              }
+            },
+            {
+              "type": "action",
+              "action": {
+                "type": "message",
+                "label": "ตลิ่งชัน",
+                "text" : "พยากรณ์อากาศประจำวันเขตตลิ่งชัน" //10170
+              }
+            },
+            {
+              "type": "action",
+              "action": {
+                "type": "message",
+                "label": "คันนายาว",
+                "text" : "พยากรณ์อากาศประจำวันเขตคันนายาว" //10230
               }
             }
-            // },
-            // {
-            //   "type": "action",
-            //   "action": {
-            //     "type": "message",
-            //     "label": "ลาดพร้าว",
-            //     "text" : "พยากรณ์อากาศประจำวันเขตลาดพร้าว" //10230
-            //   }
-            // },
-            // {
-            //   "type": "action",
-            //   "action": {
-            //     "type": "message",
-            //     "label": "ดินแดง",
-            //     "text" : "พยากรณ์อากาศประจำวันเขตดินแดง" //10400
-            //   }
-            // },
-            // {
-            //   "type": "action",
-            //   "action": {
-            //     "type": "message",
-            //     "label": "สาทร",
-            //     "text" : "พยากรณ์อากาศประจำวันเขตสาทร" //10120
-            //   }
-            // },
-            // {
-            //   "type": "action",
-            //   "action": {
-            //     "type": "message",
-            //     "label": "ตลิ่งชัน",
-            //     "text" : "พยากรณ์อากาศประจำวันเขตตลิ่งชัน" //10170
-            //   }
-            // },
-            // {
-            //   "type": "action",
-            //   "action": {
-            //     "type": "message",
-            //     "label": "คันนายาว",
-            //     "text" : "พยากรณ์อากาศประจำวันเขตคันนายาว" //10230
-            //   }
-            // },
           ]
         }
       }
