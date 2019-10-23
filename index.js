@@ -689,21 +689,21 @@ function sendGreetingMessage (sender, text) {
   let greetingMsg = "";
   switch(text){
     case check_conditions(text, weatherToday) === true && text :{
-      isGreetingMsgT1 = true;
+      set(isGreetingMsgT1 , true);
       console.log('isGreetingMsgT1', isGreetingMsgT1)
     }
     case check_conditions(text, weatherTodayLocal) === true && text :{
-      isGreetingMsgT2 = true;
+      set(isGreetingMsgT2 , true)
       console.log('isGreetingMsgT2', isGreetingMsgT2)
     }
     if(randomGreetingNum == 0 & isGreetingMsgT1){
-      greetingMsg = "สวัสดีค่ะ BAAC-Smart พร้อมให้บริการค่ะ";
+      set(greetingMsg ,"สวัสดีค่ะ BAAC-Smart พร้อมให้บริการค่ะ");
     }
     else if (randomGreetingNum == 1 & isGreetingMsgT1){
-      greetingMsg = "สวัสดีค่า~ สามารถเลือกใช้งานได้โดยกดที่เมนูได้เลยค่ะ";
+      set(greetingMsg , "สวัสดีค่า~ สามารถเลือกใช้งานได้โดยกดที่เมนูได้เลยค่ะ");
     }
     else if(randomGreetingNum == 2 & isGreetingMsgT1){
-      greetingMsg = "สวัสดีค่ะ BAAC-Smart ยินดีให้บริการค่ะ";
+      set(greetingMsg , "สวัสดีค่ะ BAAC-Smart ยินดีให้บริการค่ะ");
     }  
     console.log("Message to User : "+ greetingMsg )
   }
