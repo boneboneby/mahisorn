@@ -267,36 +267,36 @@ app.post('/webhook', (req, res) => {
     console.log('text from user before compare with Switch case', text)
     switch(text){
       
-      case check_conditions(text, wordStarterWeatherMenu) === true && text :{
-        isSwitchCase = true;
-        weatherMenuCarouselTemplate(sender) 
-      } 
-      case check_conditions(text, wordGreeting) === true && text :{
+      case check_conditions(text, wordStarterWeatherMenu) === true && text : 
+      isSwitchCase = true
+      weatherMenuCarouselTemplate(sender);
+      
+      case check_conditions(text, wordGreeting) === true && text :
         isSwitchCase = true;
         sendGreetingMessage(sender, text) 
 
-      } 
-      case check_conditions(text, weatherToday || wordMenuDailyWeather) === true && text :{
+      
+      case check_conditions(text, weatherToday || wordMenuDailyWeather) === true && text :
         isSwitchCase = true;
         isDailyWeather = true;
         weatherDailyMenuCarouselTemplate(sender, text) 
 
-      } 
-      case check_conditions(text, wordMenuForecastWeather) === true && text :{
+      
+      case check_conditions(text, wordMenuForecastWeather) === true && text :
         isSwitchCase = true;
         a5dayMenuCarouselTemplate(sender, text) 
 
-      } 
-      case check_conditions(text, wordGreeting) === true && text :{
+      
+      case check_conditions(text, wordGreeting) === true && text :
         isSwitchCase = true;
         sendGreetingMessage(sender, text) 
 
-      }
-      case check_conditions(text, wordDailyByZipCode) === true && text :{
+      
+      case check_conditions(text, wordDailyByZipCode) === true && text :
         isSwitchCase = true;
         weatherDailyByDestrict(sender, text) 
 
-      }  
+      
     }
   
   
