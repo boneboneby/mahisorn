@@ -13,6 +13,7 @@ let is5daysWeather = false;
 let isRestrictDaily = false;
 let isGeoDaily = false;
 let isGeo5days = false;
+let isSwitchCase = false;
 
 //////////////////////////////////////////////////Boolean Status//////////////////////////////////////////////////////////
 
@@ -221,6 +222,7 @@ app.set('port', (process.env.PORT || 4000))
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
 app.post('/webhook', (req, res) => {
+  isSwitchCase = false;
   var type = req.body.events[0].message.type
   var eventsType = req.body.events[0].type
   if(type === 'text'){
@@ -255,14 +257,20 @@ app.post('/webhook', (req, res) => {
 ///////////////////////////////////////////Message Type Text///////////////////////////////////////////
   else if(type === 'text' && eventsType === 'message'){
     switch(text){
-      case check_conditions(text, starterWeatherMenu) === true && text : weatherMenuCarouselTemplate(sender) 
+      
+      case check_conditions(text, starterWeatherMenu) === true && text :{
+        isSwitchCase = true;
+        weatherMenuCarouselTemplate(sender) 
+      } 
+      case check_conditions(text, greetingWord) === true && text :{
+        isSwitchCase = true;
+        sendGreetingMessage(sender) 
+
+      } 
     }
-  if (text === greetingWord) {
-    
-    sendGreetingMessage(sender, text)
-  }
   
-  else if (text === 'weathertoday' || text === 'พยากรณ์อากาศประจำวัน') {
+  
+  if (text === 'weathertoday' || text === 'พยากรณ์อากาศประจำวัน') {
     isDailyWeather = true;
     weatherDailyMenuCarouselTemplate(sender)
   }
@@ -290,7 +298,7 @@ app.post('/webhook', (req, res) => {
     entrepreneurCredit(sender)
   }
   else {
-    deFaultFallback(sender, text);
+    if(!isSwitchCase){deFaultFallback(sender, text);}
   }
 }
   res.sendStatus(200)
