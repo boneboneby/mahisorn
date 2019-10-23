@@ -248,6 +248,7 @@ app.post('/webhook', (req, res) => {
   else if(type === 'text' && eventsType === 'message'){
     for ( i=0;i  < wordStarterWeatherMenu.length ;  i++ ){
       if (wordStarterWeatherMenu[i]==text) {
+        isForLop = true;
         weatherMenuCarouselTemplate(sender)
         break;
         }
@@ -255,20 +256,21 @@ app.post('/webhook', (req, res) => {
     for ( i=0;i  < weatherToday.length ;  i++ ){
       if (weatherToday[i]==text) {
         isGeoDaily = true;
+        isForLop = true;
         weatherDailyMenuCarouselTemplate(sender)
         break;
         }
       }
     for ( i=0;i  < wordGreeting.length ;  i++ ){
       if (wordGreeting[i]==text) {
-       
+        isForLop = true;
         sendGreetingMessage(sender)
         break;
         }
       }
     for ( i=0;i  < wordDailyByZipCode.length ;  i++ ){
       if (wordDailyByZipCode[i]==text) {
-        
+        isForLop = true;
         weatherDailyByDestrict(sender,text)
         break;
         }
@@ -298,8 +300,7 @@ app.post('/webhook', (req, res) => {
     entrepreneurCredit(sender)
   }
   else {
-    
-      deFaultFallback(sender, text);}
+    if(!isForLop) deFaultFallback(sender, text);}
   
 }
   res.sendStatus(200)
@@ -485,47 +486,48 @@ function quickReplyWeatherDailbyRestrict (sender, text) {
                 "type": "cameraRoll",
                 "label": "Send photo"
               }
-            },
-            {
-              "type": "action",
-              "action": {
-                "type": "message",
-                "label": "ลาดพร้าว",
-                "text" : "พยากรณ์อากาศประจำวันเขตลาดพร้าว" //10230
-              }
-            },
-            {
-              "type": "action",
-              "action": {
-                "type": "message",
-                "label": "ดินแดง",
-                "text" : "พยากรณ์อากาศประจำวันเขตดินแดง" //10400
-              }
-            },
-            {
-              "type": "action",
-              "action": {
-                "type": "message",
-                "label": "สาทร",
-                "text" : "พยากรณ์อากาศประจำวันเขตสาทร" //10120
-              }
-            },
-            {
-              "type": "action",
-              "action": {
-                "type": "message",
-                "label": "ตลิ่งชัน",
-                "text" : "พยากรณ์อากาศประจำวันเขตตลิ่งชัน" //10170
-              }
-            },
-            {
-              "type": "action",
-              "action": {
-                "type": "message",
-                "label": "คันนายาว",
-                "text" : "พยากรณ์อากาศประจำวันเขตคันนายาว" //10230
-              }
-            },
+            }
+            // },
+            // {
+            //   "type": "action",
+            //   "action": {
+            //     "type": "message",
+            //     "label": "ลาดพร้าว",
+            //     "text" : "พยากรณ์อากาศประจำวันเขตลาดพร้าว" //10230
+            //   }
+            // },
+            // {
+            //   "type": "action",
+            //   "action": {
+            //     "type": "message",
+            //     "label": "ดินแดง",
+            //     "text" : "พยากรณ์อากาศประจำวันเขตดินแดง" //10400
+            //   }
+            // },
+            // {
+            //   "type": "action",
+            //   "action": {
+            //     "type": "message",
+            //     "label": "สาทร",
+            //     "text" : "พยากรณ์อากาศประจำวันเขตสาทร" //10120
+            //   }
+            // },
+            // {
+            //   "type": "action",
+            //   "action": {
+            //     "type": "message",
+            //     "label": "ตลิ่งชัน",
+            //     "text" : "พยากรณ์อากาศประจำวันเขตตลิ่งชัน" //10170
+            //   }
+            // },
+            // {
+            //   "type": "action",
+            //   "action": {
+            //     "type": "message",
+            //     "label": "คันนายาว",
+            //     "text" : "พยากรณ์อากาศประจำวันเขตคันนายาว" //10230
+            //   }
+            // },
           ]
         }
       }
