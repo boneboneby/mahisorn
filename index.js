@@ -14,6 +14,8 @@ let isRestrictDaily = false;
 let isGeoDaily = false;
 let isGeo5days = false;
 let isSwitchCase = false;
+let isGreetingMsgT1 = false;
+let isGreetingMsgT2 = false;
 
 //////////////////////////////////////////////////Boolean Status//////////////////////////////////////////////////////////
 
@@ -222,6 +224,8 @@ app.set('port', (process.env.PORT || 4000))
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
 app.post('/webhook', (req, res) => {
+  isGreetingMsgT1 = false;
+  isGreetingMsgT2 = false;
   isSwitchCase = false;
   var type = req.body.events[0].message.type
   var eventsType = req.body.events[0].type
@@ -685,22 +689,24 @@ function sendGreetingMessage (sender, text) {
   let greetingMsg = "";
   switch(text){
     case check_conditions(text, weatherToday) === true && text :{
-      if(randomGreetingNum == 0){
-        greetingMsg = "สวัสดีค่ะ BAAC-Smart พร้อมให้บริการค่ะ";
-      }
-      else if (randomGreetingNum == 1){
-        greetingMsg = "สวัสดีค่า~ สามารถเลือกใช้งานได้โดยกดที่เมนูได้เลยค่ะ";
-      }
-      else if(randomGreetingNum == 2){
-        greetingMsg = "สวัสดีค่ะ BAAC-Smart ยินดีให้บริการค่ะ";
-      }
+      isGreetingMsgT1 = true;
+      console.log('isGreetingMsgT1', isGreetingMsgT1)
     }
     case check_conditions(text, weatherTodayLocal) === true && text :{
-      greetingMsg = "สวัสดีค่ะ[local language undeploy]";
+      isGreetingMsgT2 = true;
+      console.log('isGreetingMsgT2', isGreetingMsgT2)
     }
-    
+    if(randomGreetingNum == 0 & isGreetingMsgT1){
+      greetingMsg = "สวัสดีค่ะ BAAC-Smart พร้อมให้บริการค่ะ";
+    }
+    else if (randomGreetingNum == 1 & isGreetingMsgT1){
+      greetingMsg = "สวัสดีค่า~ สามารถเลือกใช้งานได้โดยกดที่เมนูได้เลยค่ะ";
+    }
+    else if(randomGreetingNum == 2 & isGreetingMsgT1){
+      greetingMsg = "สวัสดีค่ะ BAAC-Smart ยินดีให้บริการค่ะ";
+    }  
     console.log("Message to User : "+ greetingMsg )
-  
+  }
   let data = {
     to: sender,
     messages: [
@@ -725,7 +731,7 @@ function sendGreetingMessage (sender, text) {
     if (body) console.log(body)
   })
 }
-}
+
 
 function deFaultFallback (sender, text) {
   randomGreetingNum = getRandomInt(3);
