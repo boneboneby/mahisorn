@@ -196,6 +196,7 @@ function getRandomInt(max) {
   return Math.floor(Math.random() * Math.floor(max));
 }
 let randomGreetingNum = 0;
+let greetingMsg = ''
 ////////////////////////////////////////////////String Method//////////////////////////////////////////////////////////////
 
 function check_conditions(text, array) {
@@ -554,7 +555,7 @@ function quickReplyWeatherDailbyRestrict (sender, text) {
 //////////////////////////////////////////////////Daily Weather by Destrict///////////////////////////////////////////////
 
 function weatherDailyByDestrict (sender, text) {
-
+  let eachCaseDestrict = '';
   if(text === "พยากรณ์อากาศประจำวันเขตลาดพร้าว" || text === "พยากรณ์อากาศประจำวันเขตคันนายาว") eachCaseDestrict = '10230'
   
   else if(text == "พยากรณ์อากาศประจำวันเขตดินแดง") eachCaseDestrict = '10400'
@@ -979,7 +980,7 @@ function groupCredit (sender, text) {
 
 function sendGreetingMessage (sender, text) {
   randomGreetingNum = getRandomInt(3);
-  let greetingMsg = "";
+  greetingMsg = "";
   if(randomGreetingNum == 0 ){
     greetingMsg = "สวัสดีค่ะ BAAC-Smart พร้อมให้บริการค่ะ";
   }
