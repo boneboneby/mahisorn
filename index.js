@@ -212,7 +212,7 @@ app.post('/webhook', (req, res) => {
   isForLop = false;
   var eventsType = req.body.events[0].type
   console.log('eventType', eventsType)
-  if(eventsType === messages){
+  if(eventsType === 'message'){
   var type = req.body.events[0].message.type
   
   if(type === 'text'){
