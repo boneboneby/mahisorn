@@ -688,13 +688,13 @@ function sendGreetingMessage (sender, text) {
   randomGreetingNum = getRandomInt(3);
   let greetingMsg = "";
   if(randomGreetingNum == 0 ){
-    set(greetingMsg ,"สวัสดีค่ะ BAAC-Smart พร้อมให้บริการค่ะ");
+    greetingMsg = "สวัสดีค่ะ BAAC-Smart พร้อมให้บริการค่ะ";
   }
   else if (randomGreetingNum == 1){
-    set(greetingMsg , "สวัสดีค่า~ สามารถเลือกใช้งานได้โดยกดที่เมนูได้เลยค่ะ");
+    greetingMsg = "สวัสดีค่า~ สามารถเลือกใช้งานได้โดยกดที่เมนูได้เลยค่ะ";
   }
   else if(randomGreetingNum == 2 ){
-    set(greetingMsg , "สวัสดีค่ะ BAAC-Smart ยินดีให้บริการค่ะ");
+    greetingMsg = "สวัสดีค่ะ BAAC-Smart ยินดีให้บริการค่ะ";
   }  
   let data = {
     to: sender,
