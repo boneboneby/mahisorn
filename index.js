@@ -230,7 +230,7 @@ function requestImg (sender , userLat , userLon){
   req.write(dataImgApiTest)
   req.end()
   send5daysTestImg1(senderForImg , linkImg)
-  send5daysTestImg(senderForImg , linkImg)
+  //send5daysTestImg(senderForImg , linkImg)
 })
 }
 
