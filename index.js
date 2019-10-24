@@ -871,6 +871,8 @@ function weather5daysByZipCode (sender, text) {
       }
     let alldates = body['list'].map(body => body.dt);
 
+    let weatherDates = []
+
     alldates.forEach(res => {
         let jsdate = new Date(res * 1000)
         weatherDates.push(jsdate.toLocaleTimeString('th' , {year: 'numeric', month : 'short' , day : 'numeric'}))
