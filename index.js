@@ -171,13 +171,14 @@ function requestImg (sender , userLat , userLon){
   })
   
   function send5daysTestImg (sender , linkImg) {
+    console.log('send5daysTestImg Started',` ${linkImg}`)
     let data = {
       to: sender,
       messages: [
         {
-          type: 'image',
-          originalContentUrl: `${linkImg}`,
-          previewImageUrl: `${linkImg}`
+          type: 'message',
+          text: `${linkImg}`
+          
         }
       ]
     }
