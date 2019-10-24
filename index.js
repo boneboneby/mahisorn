@@ -910,8 +910,7 @@ function weather5daysByZipCode (sender, text) {
       \nวัน/เวลา: ${body.list[36].dt_txt} \nอุณภูมิ:  ${body.list[36].main.temp} องศา \nสภาพอากาศ:  ${body.list[36].weather[0].description}
       \nวัน/เวลา: ${body.list[37].dt_txt} \nอุณภูมิ:  ${body.list[37].main.temp} องศา \nสภาพอากาศ:  ${body.list[37].weather[0].description}
       \nวัน/เวลา: ${body.list[38].dt_txt} \nอุณภูมิ:  ${body.list[38].main.temp} องศา \nสภาพอากาศ:  ${body.list[38].weather[0].description}
-      \nวัน/เวลา: ${body.list[39].dt_txt} \nอุณภูมิ:  ${body.list[39].main.temp} องศา \nสภาพอากาศ:  ${body.list[39].weather[0].description}
-      \nวัน/เวลา: ${body.list[40].dt_txt} \nอุณภูมิ:  ${body.list[40].main.temp} องศา \nสภาพอากาศ:  ${body.list[40].weather[0].description}`
+      \nวัน/เวลา: ${body.list[39].dt_txt} \nอุณภูมิ:  ${body.list[39].main.temp} องศา \nสภาพอากาศ:  ${body.list[39].weather[0].description}`
       
       return push5days_3hour2( msg5daysByDistrict1 , msg5daysByDistrict2 , sender);
       
