@@ -282,6 +282,7 @@ app.post('/webhook', (req, res) => {
     
   }
   else if (type === 'location' && isGeo5days){
+    console.log('Function Geo5days Started')
     geo5days(sender , userLat , userLon )
     requestImg(sender , userLat , userLon)
 
