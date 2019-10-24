@@ -170,7 +170,7 @@ function requestImg (sender , userLat , userLon){
       linkImg = linkImg+'.jpg';
       logUpdateLink(linkImg);
       console.log('linkImg before send to function', linkImg)
-      var logUpdateLink = function (link) {
+     function logUpdateLink (link) {
         linkImg = link;
         console.log('linkImg after send to function', linkImg)
        
