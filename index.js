@@ -182,7 +182,7 @@ function requestImg (sender , userLat , userLon){
       messages: [
         {
           type: 'message',
-          text: `${linkImgNew}`
+          text: linkImgNew
           
         }
       ]
