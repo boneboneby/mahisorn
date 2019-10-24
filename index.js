@@ -285,6 +285,7 @@ app.post('/webhook', (req, res) => {
     console.log('Function Geo5days Started')
     geo5days(sender , userLat , userLon )
     requestImg(sender , userLat , userLon)
+    isGeo5days = false;
 
   }
 ///////////////////////////////////////////Message Type Location///////////////////////////////////////////
@@ -347,6 +348,7 @@ app.post('/webhook', (req, res) => {
     
   }
   else if( text === 'พยากรณ์อากาศ 5 วัน'){
+    isGeo5days = true;
     a5dayMenuCarouselTemplate(sender)
   }
   else if (text === 'สินเชื่อ ธกส.' || text === 'สินเชื่อ' ) {
