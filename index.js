@@ -912,11 +912,22 @@ function weather5daysByZipCode (sender, text) {
       \nวัน/เวลา: ${body.list[38].dt_txt} \nอุณภูมิ:  ${body.list[38].main.temp} องศา \nสภาพอากาศ:  ${body.list[38].weather[0].description}
       \nวัน/เวลา: ${body.list[39].dt_txt} \nอุณภูมิ:  ${body.list[39].main.temp} องศา \nสภาพอากาศ:  ${body.list[39].weather[0].description}`
       
-      return push5days_3hour2( msg5daysByDistrict1 , msg5daysByDistrict2 , sender);
+      return push5daysByDistrict( msg5daysByDistrict1 , msg5daysByDistrict2 , sender);
       
     })
     }
-    
+      const push5daysByDistrict = async  (msg5daysByDistrict1 , msg5daysByDistrict2 , userId ) => {
+        request.post({
+          uri: `${LINE_MESSAGING_API}/push`,
+          headers: LINE_HEADER,
+          body: JSON.stringify({
+            to: userId,
+            messages: [{ type: "text", text: msg5daysByDistrict1 }, { type: "text", text: msg5daysByDistrict2 }]
+          })
+        });
+        return res.status(200).send({ message: `Push: ${msg}` });
+      };
+      
 
 //////////////////////////////////////////////////5days Weather by District///////////////////////////////////////////////
 
