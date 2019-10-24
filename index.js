@@ -169,39 +169,15 @@ function requestImg (sender , userLat , userLon){
       console.log('imgurl', linkImg)
     })
   })
-  function send5daysTestImg1 (sender , linkImg) {
-    let data = {
-      to: sender,
-      messages: [
-        {
-          type: 'message',
-          text: linkImg
-        }
-      ]
-    }
-    request({
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer '+CH_ACCESS_TOKEN+''
-      },
-      url: 'https://api.line.me/v2/bot/message/push',
-      method: 'POST',
-      body: data,
-      json: true
-    }, function (err, res, body) {
-      if (err) console.log('error')
-      if (res) console.log('URL : https://api.line.me/v2/bot/message/push || Type of method : POST || Result : success')
-      if (body) console.log(body)
-    })
-  }
+  
   function send5daysTestImg (sender , linkImg) {
     let data = {
       to: sender,
       messages: [
         {
           type: 'image',
-          originalContentUrl: linkImg,
-          previewImageUrl: linkImg
+          originalContentUrl: `${linkImg}`,
+          previewImageUrl: `${linkImg}`
         }
       ]
     }
@@ -229,8 +205,8 @@ function requestImg (sender , userLat , userLon){
   
   req.write(dataImgApiTest)
   req.end()
-  send5daysTestImg1(senderForImg , linkImg)
-  //send5daysTestImg(senderForImg , linkImg)
+  // send5daysTestImg1(senderForImg , linkImg)
+  send5daysTestImg(senderForImg , linkImg)
 })
 }
 
