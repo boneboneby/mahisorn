@@ -881,7 +881,36 @@ function weather5daysByZipCode (sender, text) {
       \nวัน/เวลา: ${body.list[7].dt_txt} \nอุณภูมิ:  ${body.list[7].main.temp} องศา \nสภาพอากาศ:  ${body.list[7].weather[0].description}
       \nวัน/เวลา: ${body.list[8].dt_txt} \nอุณภูมิ:  ${body.list[8].main.temp} องศา \nสภาพอากาศ:  ${body.list[8].weather[0].description}
       \nวัน/เวลา: ${body.list[9].dt_txt} \nอุณภูมิ:  ${body.list[9].main.temp} องศา \nสภาพอากาศ:  ${body.list[9].weather[0].description}
-      \nวัน/เวลา: ${body.list[10].dt_txt} \nอุณภูมิ:  ${body.list[10].main.temp} องศา \nสภาพอากาศ:  ${body.list[10].weather[0].description}`
+      \nวัน/เวลา: ${body.list[10].dt_txt} \nอุณภูมิ:  ${body.list[10].main.temp} องศา \nสภาพอากาศ:  ${body.list[10].weather[0].description}
+      \nวัน/เวลา: ${body.list[11].dt_txt} \nอุณภูมิ:  ${body.list[11].main.temp} องศา \nสภาพอากาศ:  ${body.list[11].weather[0].description}
+      \nวัน/เวลา: ${body.list[12].dt_txt} \nอุณภูมิ:  ${body.list[12].main.temp} องศา \nสภาพอากาศ:  ${body.list[12].weather[0].description}
+      \nวัน/เวลา: ${body.list[13].dt_txt} \nอุณภูมิ:  ${body.list[13].main.temp} องศา \nสภาพอากาศ:  ${body.list[13].weather[0].description}
+      \nวัน/เวลา: ${body.list[14].dt_txt} \nอุณภูมิ:  ${body.list[14].main.temp} องศา \nสภาพอากาศ:  ${body.list[14].weather[0].description}
+      \nวัน/เวลา: ${body.list[15].dt_txt} \nอุณภูมิ:  ${body.list[15].main.temp} องศา \nสภาพอากาศ:  ${body.list[15].weather[0].description}
+      \nวัน/เวลา: ${body.list[16].dt_txt} \nอุณภูมิ:  ${body.list[16].main.temp} องศา \nสภาพอากาศ:  ${body.list[16].weather[0].description}
+      \nวัน/เวลา: ${body.list[17].dt_txt} \n ุณภูมิ:  ${body.list[17].main.temp} องศา \nสภาพอากาศ:  ${body.list[17].weather[0].description}
+      \nวัน/เวลา: ${body.list[18].dt_txt} \n ุณภูมิ:  ${body.list[18].main.temp} องศา \nสภาพอากาศ:  ${body.list[18].weather[0].description}
+      \nวัน/เวลา: ${body.list[19].dt_txt} \n ุณภูมิ:  ${body.list[19].main.temp} องศา \nสภาพอากาศ:  ${body.list[19].weather[0].description}
+      \nวัน/เวลา: ${body.list[20].dt_txt} \n ุณภูมิ:  ${body.list[20].main.temp} องศา \nสภาพอากาศ:  ${body.list[20].weather[0].description}
+      \nวัน/เวลา: ${body.list[21].dt_txt} \n ุณภูมิ:  ${body.list[21].main.temp} องศา \nสภาพอากาศ:  ${body.list[21].weather[0].description}
+      \nวัน/เวลา: ${body.list[22].dt_txt} \n ุณภูมิ:  ${body.list[22].main.temp} องศา \nสภาพอากาศ:  ${body.list[22].weather[0].description}
+      \nวัน/เวลา: ${body.list[23].dt_txt} \n ุณภูมิ:  ${body.list[23].main.temp} องศา \nสภาพอากาศ:  ${body.list[23].weather[0].description}
+      \nวัน/เวลา: ${body.list[24].dt_txt} \n ุณภูมิ:  ${body.list[24].main.temp} องศา \nสภาพอากาศ:  ${body.list[24].weather[0].description}
+      \nวัน/เวลา: ${body.list[25].dt_txt} \n ุณภูมิ:  ${body.list[25].main.temp} องศา \nสภาพอากาศ:  ${body.list[25].weather[0].description}
+      \nวัน/เวลา: ${body.list[26].dt_txt} \nอุณภูมิ:  ${body.list[26].main.temp} องศา \nสภาพอากาศ:  ${body.list[26].weather[0].description}
+      \nวัน/เวลา: ${body.list[27].dt_txt} \nอุณภูมิ:  ${body.list[27].main.temp} องศา \nสภาพอากาศ:  ${body.list[27].weather[0].description}
+      \nวัน/เวลา: ${body.list[28].dt_txt} \nอุณภูมิ:  ${body.list[28].main.temp} องศา \nสภาพอากาศ:  ${body.list[28].weather[0].description}
+      \nวัน/เวลา: ${body.list[29].dt_txt} \nอุณภูมิ:  ${body.list[29].main.temp} องศา \nสภาพอากาศ:  ${body.list[29].weather[0].description}
+      \nวัน/เวลา: ${body.list[30].dt_txt} \nอุณภูมิ:  ${body.list[30].main.temp} องศา \nสภาพอากาศ:  ${body.list[30].weather[0].description}
+      \nวัน/เวลา: ${body.list[31].dt_txt} \nอุณภูมิ:  ${body.list[31].main.temp} องศา \nสภาพอากาศ:  ${body.list[31].weather[0].description}
+      \nวัน/เวลา: ${body.list[32].dt_txt} \nอุณภูมิ:  ${body.list[32].main.temp} องศา \nสภาพอากาศ:  ${body.list[32].weather[0].description}
+      \nวัน/เวลา: ${body.list[33].dt_txt} \n ุณภูมิ:  ${body.list[33].main.temp} องศา \nสภาพอากาศ:  ${body.list[33].weather[0].description}
+      \nวัน/เวลา: ${body.list[34].dt_txt} \nอุณภูมิ:  ${body.list[34].main.temp} องศา \nสภาพอากาศ:  ${body.list[34].weather[0].description}
+      \nวัน/เวลา: ${body.list[35].dt_txt} \nอุณภูมิ:  ${body.list[35].main.temp} องศา \nสภาพอากาศ:  ${body.list[35].weather[0].description}
+      \nวัน/เวลา: ${body.list[36].dt_txt} \nอุณภูมิ:  ${body.list[36].main.temp} องศา \nสภาพอากาศ:  ${body.list[36].weather[0].description}
+      \nวัน/เวลา: ${body.list[37].dt_txt} \nอุณภูมิ:  ${body.list[37].main.temp} องศา \nสภาพอากาศ:  ${body.list[37].weather[0].description}
+      \nวัน/เวลา: ${body.list[38].dt_txt} \nอุณภูมิ:  ${body.list[38].main.temp} องศา \nสภาพอากาศ:  ${body.list[38].weather[0].description}
+      \nวัน/เวลา: ${body.list[39].dt_txt} \nอุณภูมิ:  ${body.list[39].main.temp} องศา \nสภาพอากาศ:  ${body.list[39].weather[0].description}`
       
       return push5daysByDistrict( msg5daysByDistrict1 , msg5daysByDistrict2 , sender);
       
