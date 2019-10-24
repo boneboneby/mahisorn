@@ -67,7 +67,9 @@ const OPENWEATHER_API_5days = "https://api.openweathermap.org/data/2.5/forecast/
 
 const urlDailyForecastByDistrict = `${OPENWEATHER_API_Daily}?appid=${OPENWEATHER_KEY}&units=metric&type=accurate&zip=`
 const url5daysForecastByDistrict = `${OPENWEATHER_API_5days}?appid=${OPENWEATHER_KEY}&units=metric&type=accurate&zip=`
-const OpenWeatherMapDaily_BY_GEOHeader = `https://api.openweathermap.org/data/2.5/weather/?appid=686d2c96c7002be9b1e714457eac2caf&units=metric&type=accurate&`
+
+
+const OpenWeatherMap5days_BY_GEOHeader = `https://api.openweathermap.org/data/2.5/forecast/?appid=686d2c96c7002be9b1e714457eac2caf&units=metric&type=accurate&`
 
 //DarkSky
 const darkAPIURLwithUserLocateHeader = 'https://api.darksky.net/forecast/6fde4f9a0ea5e1b971b1df0cd62158e1/';
@@ -97,8 +99,8 @@ const CH_ACCESS_TOKEN = '3ZP9XTq2s8J/phgB9G6NJkUX+3yKi0f2Ydt+FbDX9sgpnzjnjVd6DhA
 
 //////////////////////////////////////////////////////Generate img/////////////////////////////////////////
 function requestImg (sender , userLat , userLon){
-  const OpenWeatherMapDaily_BY_GEOHeaderANDinfo = `${OpenWeatherMapDaily_BY_GEOHeader}+${userLat}+&+${userLon}`
-  request(OpenWeatherMapDaily_BY_GEOHeaderANDinfo, function (error, response, body) {
+  let url5daysByGeo = `https://api.openweathermap.org/data/2.5/forecast/?lat=${userLat}&lon=${userLon}&appid=686d2c96c7002be9b1e714457eac2caf&units=metric&type=accurate`;
+  request(url5daysByGeo, function (error, response, body) {
     let senderForImg = sender;
     if (!error && response.statusCode == 200) {
       body = JSON.parse(body);
@@ -167,7 +169,31 @@ function requestImg (sender , userLat , userLon){
       console.log('imgurl', linkImg)
     })
   })
-  
+  function send5daysTestImg1 (sender , linkImg) {
+    let data = {
+      to: sender,
+      messages: [
+        {
+          type: 'message',
+          text: linkImg
+        }
+      ]
+    }
+    request({
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer '+CH_ACCESS_TOKEN+''
+      },
+      url: 'https://api.line.me/v2/bot/message/push',
+      method: 'POST',
+      body: data,
+      json: true
+    }, function (err, res, body) {
+      if (err) console.log('error')
+      if (res) console.log('URL : https://api.line.me/v2/bot/message/push || Type of method : POST || Result : success')
+      if (body) console.log(body)
+    })
+  }
   function send5daysTestImg (sender , linkImg) {
     let data = {
       to: sender,
@@ -203,8 +229,8 @@ function requestImg (sender , userLat , userLon){
   
   req.write(dataImgApiTest)
   req.end()
+  send5daysTestImg1(senderForImg , linkImg)
   send5daysTestImg(senderForImg , linkImg)
-  s5dayMenuCarouselTemplate(senderForImg , linkImg)
 })
 }
 
