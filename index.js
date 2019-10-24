@@ -869,9 +869,14 @@ function weather5daysByZipCode (sender, text) {
         cityName = "ลาดพร้าว";
       }
       }
-    
+    let alldates = body['list'].map(body => body.dt);
+
+    alldates.forEach(res => {
+        let jsdate = new Date(res * 1000)
+        weatherDates.push(jsdate.toLocaleTimeString('th' , {year: 'numeric', month : 'short' , day : 'numeric'}))
+      })
       const msg5daysByDistrict1  = `พยากรณ์อากาศ 5 วัน\nเขต: ลาดพร้าว`;
-      const msg5daysByDistrict2 = `วัน/เวลา: ${body.list[0].dt_txt} \nสภาพอากาศ:  ${body.list[0].weather[0].description} 
+      const msg5daysByDistrict2 = `วัน/เวลา: ${weatherDates[0]} \nสภาพอากาศ:  ${body.list[0].weather[0].description} 
       \nวัน/เวลา: ${body.list[1].dt_txt} \nอุณภูมิ:  ${body.list[1].main.temp} องศา \nสภาพอากาศ:  ${body.list[1].weather[0].description}
       \nวัน/เวลา: ${body.list[2].dt_txt} \nอุณภูมิ:  ${body.list[2].main.temp} องศา \nสภาพอากาศ:  ${body.list[2].weather[0].description}
       \nวัน/เวลา: ${body.list[3].dt_txt} \nอุณภูมิ:  ${body.list[3].main.temp} องศา \nสภาพอากาศ:  ${body.list[3].weather[0].description}
