@@ -871,7 +871,7 @@ function weather5daysByZipCode (sender, text) {
       }
     
       const msg5daysByDistrict1  = `พยากรณ์อากาศ 5 วัน\nเขต: ลาดพร้าว`;
-      const msg5daysByDistrict2 = `วัน/เวลา: ${body.list[0].dt_txt} \nอุณภูมิ:  ${body.list[0].main.temp} องศา \nสภาพอากาศ:  ${body.list[0].weather[0].description} 
+      const msg5daysByDistrict2 = `วัน/เวลา: ${body.list[0].dt_txt} \nสภาพอากาศ:  ${body.list[0].weather[0].description} 
       \nวัน/เวลา: ${body.list[1].dt_txt} \nอุณภูมิ:  ${body.list[1].main.temp} องศา \nสภาพอากาศ:  ${body.list[1].weather[0].description}
       \nวัน/เวลา: ${body.list[2].dt_txt} \nอุณภูมิ:  ${body.list[2].main.temp} องศา \nสภาพอากาศ:  ${body.list[2].weather[0].description}
       \nวัน/เวลา: ${body.list[3].dt_txt} \nอุณภูมิ:  ${body.list[3].main.temp} องศา \nสภาพอากาศ:  ${body.list[3].weather[0].description}
@@ -891,8 +891,9 @@ function weather5daysByZipCode (sender, text) {
       \nวัน/เวลา: ${body.list[17].dt_txt} \nอุณภูมิ:  ${body.list[17].main.temp} องศา \nสภาพอากาศ:  ${body.list[17].weather[0].description}
       \nวัน/เวลา: ${body.list[18].dt_txt} \nอุณภูมิ:  ${body.list[18].main.temp} องศา \nสภาพอากาศ:  ${body.list[18].weather[0].description}
       \nวัน/เวลา: ${body.list[19].dt_txt} \nอุณภูมิ:  ${body.list[19].main.temp} องศา \nสภาพอากาศ:  ${body.list[19].weather[0].description}
-      \nวัน/เวลา: ${body.list[20].dt_txt} \nอุณภูมิ:  ${body.list[20].main.temp} องศา \nสภาพอากาศ:  ${body.list[20].weather[0].description}
-      \nวัน/เวลา: ${body.list[21].dt_txt} \nอุณภูมิ:  ${body.list[21].main.temp} องศา \nสภาพอากาศ:  ${body.list[21].weather[0].description}
+      \nวัน/เวลา: ${body.list[20].dt_txt} \nอุณภูมิ:  ${body.list[20].main.temp} องศา \nสภาพอากาศ:  ${body.list[20].weather[0].description}`
+     
+      const msg5daysByDistrict3 = `วัน/เวลา: ${body.list[21].dt_txt} \nอุณภูมิ:  ${body.list[21].main.temp} องศา \nสภาพอากาศ:  ${body.list[21].weather[0].description}
       \nวัน/เวลา: ${body.list[22].dt_txt} \nอุณภูมิ:  ${body.list[22].main.temp} องศา \nสภาพอากาศ:  ${body.list[22].weather[0].description}
       \nวัน/เวลา: ${body.list[23].dt_txt} \nอุณภูมิ:  ${body.list[23].main.temp} องศา \nสภาพอากาศ:  ${body.list[23].weather[0].description}
       \nวัน/เวลา: ${body.list[24].dt_txt} \nอุณภูมิ:  ${body.list[24].main.temp} องศา \nสภาพอากาศ:  ${body.list[24].weather[0].description}
@@ -911,18 +912,17 @@ function weather5daysByZipCode (sender, text) {
       \nวัน/เวลา: ${body.list[37].dt_txt} \nอุณภูมิ:  ${body.list[37].main.temp} องศา \nสภาพอากาศ:  ${body.list[37].weather[0].description}
       \nวัน/เวลา: ${body.list[38].dt_txt} \nอุณภูมิ:  ${body.list[38].main.temp} องศา \nสภาพอากาศ:  ${body.list[38].weather[0].description}
       \nวัน/เวลา: ${body.list[39].dt_txt} \nอุณภูมิ:  ${body.list[39].main.temp} องศา \nสภาพอากาศ:  ${body.list[39].weather[0].description}`
-      
-      return push5daysByDistrict( msg5daysByDistrict1 , msg5daysByDistrict2 , sender);
+      return push5daysByDistrict( msg5daysByDistrict1 , msg5daysByDistrict2 , msg5daysByDistrict3, sender);
       
     })
     }
-      let push5daysByDistrict = async  (msg5daysByDistrict1 , msg5daysByDistrict2 , userId ) => {
+      let push5daysByDistrict = async  (msg5daysByDistrict1 , msg5daysByDistrict2 , msg5daysByDistrict3, userId ) => {
         request.post({
           uri: `${LINE_MESSAGING_API}/push`,
           headers: LINE_HEADER,
           body: JSON.stringify({
             to: userId,
-            messages: [{ type: "text", text: msg5daysByDistrict1 }, { type: "text", text: msg5daysByDistrict2 }]
+            messages: [{ type: "text", text: msg5daysByDistrict1 }, { type: "text", text: msg5daysByDistrict2 } , { type: "text", text: msg5daysByDistrict3 }]
           })
         });
         return res.status(200).send({ message: `Push: ${msg}` });
