@@ -168,18 +168,12 @@ function requestImg (sender , userLat , userLon){
       
       linkImg = image["url"];
       linkImg = linkImg+'.jpg';
-      logUpdateLink(linkImg);
-      console.log('linkImg before send to function', linkImg)
-     function logUpdateLink (link) {
-        linkImg = link;
-        console.log('linkImg after send to function', linkImg)
-       
-         
-       };
+      send5daysTestImg(senderForImg , linkImg)
+      
       
     })
   })
-  console.log('imgurl', linkImg)
+  console.log('imgurl outsider', linkImg)
   function send5daysTestImg (sender , linkImg) {
     let linkImgNew = linkImg;
     console.log(`send5daysTestImg Started ${linkImgNew}`)
@@ -218,7 +212,7 @@ function requestImg (sender , userLat , userLon){
   req.write(dataImgApiTest)
   req.end()
   // send5daysTestImg1(senderForImg , linkImg)
-  send5daysTestImg(senderForImg , linkImg)
+  
 })
 }
 
