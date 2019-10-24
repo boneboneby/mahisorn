@@ -783,14 +783,14 @@ function geo5days (sender , userLat , userLon) {
     const msgGeo5days1 = `พยากรณ์อากาศประจำวัน\nเขต: ${cityName}`;
     const msgGeo5days2 = `อุณภูมิ:  ${body.main.temp} °C \n สภาพอากาศ: ${weather}  \n ความชื้น : ${body.main.humidity}% \n ทิศทางลม : ${body.wind.deg}° \n ความเร็วลม : ${body.wind.speed} กม./ชม. `
     
-    return pushGeoWeatherDaily( msgGeo5days1 ,msgGeo5days2 , sender);
+    return pushGeoWeather5days( msgGeo5days1 ,msgGeo5days2 , sender);
       }else if (error){
         console.log('Request api ERROR ')
       }
     })
   }
   
-  const pushGeoWeatherDaily = async (msgGeo5days1 ,msgGeo5days2  , userId) => {
+  const pushGeoWeather5days = async (msgGeo5days1 ,msgGeo5days2  , userId) => {
     request.post({
       uri: `${LINE_MESSAGING_API}/push`,
       headers: LINE_HEADER,
