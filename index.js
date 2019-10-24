@@ -166,10 +166,10 @@ function requestImg (sender , userLat , userLon){
       const image = JSON.parse(d)
       linkImg = image["url"];
       linkImg = linkImg+'.jpg';
-      console.log('imgurl', linkImg)
+      
     })
   })
-  
+  console.log('imgurl', linkImg)
   function send5daysTestImg (sender , linkImg) {
     let linkImgNew = linkImg;
     console.log(`send5daysTestImg Started ${linkImgNew}`)
