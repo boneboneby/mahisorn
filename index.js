@@ -9,7 +9,7 @@ admin.initializeApp({
 
 
 var db = admin.database();
-var ref = db.ref("server/saving-data/fireblog");
+var ref = db.ref("server/saving-data/UserInfo");
 
 var usersRef = ref.child("users");
 // usersRef.set({
@@ -23,8 +23,14 @@ var usersRef = ref.child("users");
 //   }
 // });
 
-usersRef.child("alanisawesome").remove();
-usersRef.child("gracehop").remove();
+// usersRef.child("alanisawesome").set({
+//   date_of_birth: "June 23, 1912",
+//   full_name: "Alan Turing"
+// });
+// usersRef.child("gracehop").set({
+//   date_of_birth: "December 9, 1906",
+//   full_name: "Grace Hopper"
+// });
 
 
 
@@ -213,7 +219,7 @@ var wordGreeting = ["สวัสดี","สวัสดีจ้า" , "สว
 var greetingWordLocal = [ "เป็นจั่งใด๋" ]
 var howToUse = ["พยากรณ์ซิได๋บุ่","ทำหยังได้บ้าง"]
 var wordDailyByZipCode = ["พยากรณ์อากาศประจำวันรหัสไปรษณีย์ 10230","พยากรณ์อากาศประจำวันรหัสไปรษณีย์ 10400","พยากรณ์อากาศประจำวันรหัสไปรษณีย์ 10120","พยากรณ์อากาศประจำวันรหัสไปรษณีย์ 10170"]
-
+var word5daysByZipCode = ["พยากรณ์อากาศ 5 วันรหัสไปรษณีย์ 10230","พยากรณ์อากาศ 5 วันรหัสไปรษณีย์ 10400","พยากรณ์อากาศ 5 วันรหัสไปรษณีย์ 10120","พยากรณ์อากาศ 5 วันรหัสไปรษณีย์ 10170"]
 //Carousel invoke
 var wordStarterWeatherMenu = ["พยากรณ์อากาศ"]
 var wordMenuDailyWeather = ["พยากรณ์อากาศประจำวัน"]
@@ -269,10 +275,15 @@ app.post('/webhook', (req, res) => {
   if(type === 'location' && isDailyWeather){
     if(isGeoDaily){
       geoDaily(sender , userLat , userLon )
+      
       isGeoDaily = false;
       isDailyWeather = false;
     }
-    //requestImg(sender , userLat , userLon)
+    
+  }
+  else if (type === 'location' && isGeo5days){
+    geo5days(sender , userLat , userLon )
+    requestImg(sender , userLat , userLon)
 
   }
 ///////////////////////////////////////////Message Type Location///////////////////////////////////////////
@@ -309,14 +320,26 @@ app.post('/webhook', (req, res) => {
         break;
         }
       }
+      for ( i=0;i  < word5daysByZipCode.length ;  i++ ){
+        if (word5daysByZipCode[i]==text) {
+          isForLop = true;
+          isGeo5days = true;
+          weather5ByZipCode(sender,text)
+          break;
+          }
+        }
     
     
   if (text === 'แผ่นดินทอง' ) {
     pandinthongCarousel(sender)
   }
-  else if (text === 'พยากรณ์อากาศตามรหัสไปรษณีย์'){
+  else if (text === 'พยากรณ์อากาศประจำวันตามรหัสไปรษณีย์'){
     quickReplyWeatherDailbyZipCode(sender)
     isGeoDaily = false;
+  }
+  else if (text === 'พยากรณ์อากาศ 5 วันตามรหัสไปรษณีย์'){
+    quickReply5daysZipCode(sender)
+    isGeo5days = false;
   }
   else if (text === 'ตั้งเวลาแจ้งเตือนฝนตก'){
     quickReplyWarningForecast(sender)
@@ -432,7 +455,7 @@ function weatherDailyMenuCarouselTemplate (sender, text) {
             {
               type: "message",
               label: "เลือกรหัสไปรษณีย์",
-              text: "พยากรณ์อากาศตามรหัสไปรษณีย์"
+              text: "พยากรณ์อากาศประจำวันตามรหัสไปรษณีย์"
             },
             {
               type: "uri",
@@ -463,7 +486,7 @@ function weatherDailyMenuCarouselTemplate (sender, text) {
 ///////////////////////////////////////////////Daily Carousel Weather////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////5days Carousel Weather////////////////////////////////////////////////////
-function a5dayMenuCarouselTemplate (sender, linkImg) {
+function a5dayMenuCarouselTemplate (sender) {
   let data = {
     to: sender,
     messages: [
@@ -486,13 +509,13 @@ function a5dayMenuCarouselTemplate (sender, linkImg) {
         actions: [
             {
               type: "message",
-              label: "ข้อความ",
-              text: "พยากรณ์อากาศ 5 วัน"
+              label: "เลือกรหัสไปรษณีย์",
+              text: "พยากรณ์อากาศ 5 วันตามรหัสไปรษณีย์"
             },
             {
-              type: "message",
-              label: "รูปภาพ",
-              text: linkImg
+              type: "uri",
+              label: "ส่งที่อยู่",
+              uri: "line://nv/location"
             }
           ]
         }
@@ -510,7 +533,7 @@ function a5dayMenuCarouselTemplate (sender, linkImg) {
     json: true
   }, function (err, res, body) {
     if (err) console.log('error')
-    if (res) console.log('s5dayMenuCarouselTemplate : POST || Result : success')
+    if (res) console.log('a5dayMenuCarouselTemplate : POST || Result : success')
     if (body) console.log(body)
   })
 } 
@@ -561,7 +584,7 @@ function quickReplyWarningForecast (sender) {
 } 
 ///////////////////////////////////////////////Datepicker for .....//////////////////////////////////////////////////////
 
-//////////////////////////////////////////////////Quick Reply for Daily Weather by Destrict///////////////////////////////////////
+//////////////////////////////////////////////////Quick Reply for Daily Weather by District///////////////////////////////////////
 
 function quickReplyWeatherDailbyZipCode (sender, text) {
   let data = {
@@ -626,7 +649,7 @@ function quickReplyWeatherDailbyZipCode (sender, text) {
   })
 } 
 
-//////////////////////////////////////////////////Quick Reply for Daily Weather by Destrict///////////////////////////////////////
+//////////////////////////////////////////////////Quick Reply for Daily Weather by District///////////////////////////////////////
 
 //////////////////////////////////////////////////Daily Weather by Destrict///////////////////////////////////////////////
 
@@ -652,11 +675,11 @@ function weatherDailyByZipCode (sender, text) {
   let cityName = body.name;
   if(cityName ===  'Lat Phrao' ) cityName = "ลาดพร้าว";
   
-  else if (cityName ===  'ฟหกฟหก' ) cityName = "ดินแดง";
+  else if (cityName ===  'Phaya Thai' ) cityName = "พญาไท";
 
-  else if (cityName ===  'ฟหกฟหก' ) cityName = "สาทร";
+  else if (cityName ===  'Bang Kholaem' ) cityName = "บางคอแหลม";
 
-  else if (cityName ===  'ฟหกฟหก' ) cityName = "ตลิ่งชัน";
+  else if (cityName ===  'Thawi Watthana' ) cityName = "ทวีวัฒนา";
 
   let weather = body.weather[0].description;
   if(weather === 'light intensity drizzle'){
@@ -692,8 +715,13 @@ const pushWeatherDaily = async (dMsg ,dMsg2  , userId) => {
 
 
 //////////////////////////////////////////////////Daily Weather by Geo/////////////////////////////////////////////////////////////
-
 function geoDaily (sender , userLat , userLon) {
+
+  usersRef.child(sender).set({
+    Lat: userLat,
+    Lon: userLon
+  });
+
   let DAILYWEATHER_BY_GEO = `https://api.openweathermap.org/data/2.5/weather/?lat=${userLat}&lon=${userLon}&appid=686d2c96c7002be9b1e714457eac2caf&units=metric&type=accurate`;
     request(DAILYWEATHER_BY_GEO, function (error, response, body) {
       if (!error && response.statusCode == 200) {
@@ -741,9 +769,107 @@ function geoDaily (sender , userLat , userLon) {
   
 //////////////////////////////////////////////////Daily Weather by Geo/////////////////////////////////////////////////////////////
 
+//////////////////////////////////////////////////5days Weather by Geo/////////////////////////////////////////////////////////////
 
+function geo5days (sender , userLat , userLon) {
+  let a5daysWEATHER_BY_GEO = `https://api.openweathermap.org/data/2.5/forecast/?lat=${userLat}&lon=${userLon}&appid=686d2c96c7002be9b1e714457eac2caf&units=metric&type=accurate`;
+    request(a5daysWEATHER_BY_GEO, function (error, response, body) {
+      if (!error && response.statusCode == 200) {
+        body = JSON.parse(body);
+        console.log('Request api success ')
+        console.log('The response body after parse => ',body)
+   
+    
+    const msgGeo5days1 = `พยากรณ์อากาศประจำวัน\nเขต: ${cityName}`;
+    const msgGeo5days2 = `อุณภูมิ:  ${body.main.temp} °C \n สภาพอากาศ: ${weather}  \n ความชื้น : ${body.main.humidity}% \n ทิศทางลม : ${body.wind.deg}° \n ความเร็วลม : ${body.wind.speed} กม./ชม. `
+    
+    return pushGeoWeatherDaily( msgGeo5days1 ,msgGeo5days2 , sender);
+      }else if (error){
+        console.log('Request api ERROR ')
+      }
+    })
+  }
+  
+  const pushGeoWeatherDaily = async (msgGeo5days1 ,msgGeo5days2  , userId) => {
+    request.post({
+      uri: `${LINE_MESSAGING_API}/push`,
+      headers: LINE_HEADER,
+      body: JSON.stringify({
+        to: userId,
+        messages: [{ type: "text", text: msgGeo5days1 }, { type: "text", text: msgGeo5days2 }]
+      })
+    });
+    return res.status(200).send({ message: `Push: ${msg}` });
+  };
+  
+//////////////////////////////////////////////////5days Weather by Geo/////////////////////////////////////////////////////////////
 
+//////////////////////////////////////////////////Quick Reply for 5days Weather by District///////////////////////////////////////
 
+function quickReply5daysZipCode (sender, text) {
+  let data = {
+    to: sender,
+    messages: [
+      {
+        type: "text",
+        text: "กรุณาเลือกรหัสไปรษณีย์เพื่อทำรายการ",
+        quickReply: {
+          items: [
+            {
+              "type": "action",
+              "action": {
+                "type": "message",
+                "label": "10230",
+                "text" : "พยากรณ์อากาศ 5 วันรหัสไปรษณีย์ 10230" //10230
+              }
+            },
+            {
+              "type": "action",
+              "action": {
+                "type": "message",
+                "label": "10400",
+                "text" : "พยากรณ์อากาศ 5 วันรหัสไปรษณีย์ 10400" //10400
+              }
+            },
+            {
+              "type": "action",
+              "action": {
+                "type": "message",
+                "label": "10120",
+                "text" : "พยากรณ์อากาศ 5 วันรหัสไปรษณีย์ 10120" //10120
+              }
+            },
+            {
+              "type": "action",
+              "action": {
+                "type": "message",
+                "label": "10170",
+                "text" : "พยากรณ์อากาศ 5 วันรหัสไปรษณีย์ 10170" //10170
+              }
+            
+            }
+          ]
+        }
+      }
+    ]
+  }
+  request({
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer '+CH_ACCESS_TOKEN+''
+    },
+    url: 'https://api.line.me/v2/bot/message/push',
+    method: 'POST',
+    body: data,
+    json: true
+  }, function (err, res, body) {
+    if (err) console.log('error')
+    if (res) console.log('quickReplyWeather5daysbyRestrict : POST || Result : success')
+    if (body) console.log(body)
+  })
+} 
+
+//////////////////////////////////////////////////Quick Reply for 5days Weather by District///////////////////////////////////////
 
 
 
