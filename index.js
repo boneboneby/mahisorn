@@ -182,8 +182,9 @@ function requestImg (sender , userLat , userLon){
       to: sender,
       messages: [
         {
-          type: 'text',
-          text: linkImgNew
+          type: "image",
+          originalContentUrl: linkImgNew,
+          previewImageUrl: linkImgNew
           
         }
       ]
