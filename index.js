@@ -846,17 +846,17 @@ function quickReply5daysZipCode (sender, text) {
 //////////////////////////////////////////////////5days Weather by District///////////////////////////////////////////////
 
 function weather5daysByZipCode (sender, text) {
-  let eachCaseDestrict = '';
-  if(text === "พยากรณ์อากาศ 5 วันรหัสไปรษณีย์ 10230") eachCaseDestrict = '10230'
+  let eachCase5daysDistrict = '';
+  if(text === "พยากรณ์อากาศ 5 วันรหัสไปรษณีย์ 10230") eachCase5daysDistrict = '10230'
   
-  else if(text === "พยากรณ์อากาศ 5 วันรหัสไปรษณีย์ 10400") eachCaseDestrict = '10400'
+  else if(text === "พยากรณ์อากาศ 5 วันรหัสไปรษณีย์ 10400") eachCase5daysDistrict = '10400'
 
-  else if(text === "พยากรณ์อากาศ 5 วันรหัสไปรษณีย์ 10120") eachCaseDestrict = '10120'
+  else if(text === "พยากรณ์อากาศ 5 วันรหัสไปรษณีย์ 10120") eachCase5daysDistrict = '10120'
 
-  else if(text === "พยากรณ์อากาศ 5 วันรหัสไปรษณีย์ 10170") eachCaseDestrict = '10170'
+  else if(text === "พยากรณ์อากาศ 5 วันรหัสไปรษณีย์ 10170") eachCase5daysDistrict = '10170'
 
   
-  let url5daysByDistrict = `${url5daysForecastByDistrict}${eachCaseDestrict},th`
+  let url5daysByDistrict = `${url5daysForecastByDistrict}${eachCase5daysDistrict},th`
   request(url5daysByDistrict, function (error, response, body) {
     if (!error && response.statusCode == 200) {
       body = JSON.parse(body);
@@ -916,7 +916,7 @@ function weather5daysByZipCode (sender, text) {
       
     })
     }
-      const push5daysByDistrict = async  (msg5daysByDistrict1 , msg5daysByDistrict2 , userId ) => {
+      let push5daysByDistrict = async  (msg5daysByDistrict1 , msg5daysByDistrict2 , userId ) => {
         request.post({
           uri: `${LINE_MESSAGING_API}/push`,
           headers: LINE_HEADER,
