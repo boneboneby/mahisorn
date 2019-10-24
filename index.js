@@ -99,6 +99,7 @@ const CH_ACCESS_TOKEN = '3ZP9XTq2s8J/phgB9G6NJkUX+3yKi0f2Ydt+FbDX9sgpnzjnjVd6DhA
 
 //////////////////////////////////////////////////////Generate img/////////////////////////////////////////
 function requestImg (sender , userLat , userLon){
+  var linkImg = "";
   let url5daysByGeo = `https://api.openweathermap.org/data/2.5/forecast/?lat=${userLat}&lon=${userLon}&appid=686d2c96c7002be9b1e714457eac2caf&units=metric&type=accurate`;
   request(url5daysByGeo, function (error, response, body) {
     let senderForImg = sender;
@@ -158,7 +159,7 @@ function requestImg (sender , userLat , userLon){
       'Authorization': 'Basic ' + new Buffer(apiIdImgApiTest + ':' + apiKeyImgApiTest).toString('base64')
     }
   }
-  let linkImg = "";
+  
   const req = https.request(options, (res) => {
     console.log(`statusCode: ${res.statusCode}`)
   
