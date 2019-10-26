@@ -1397,21 +1397,21 @@ function translateDistrictTH(cityName){
 }
 
 function translateZipCodeTH(zipCode){
-  if(text === "พยากรณ์อากาศ 5 วันรหัสไปรษณีย์ 10230") zipCode = '10230'
+  if(zipCode === "พยากรณ์อากาศ 5 วันรหัสไปรษณีย์ 10230") zipCode = '10230'
   
-  else if(text === "พยากรณ์อากาศ 5 วันรหัสไปรษณีย์ 10400") zipCode = '10400'
+  else if(zipCode === "พยากรณ์อากาศ 5 วันรหัสไปรษณีย์ 10400") zipCode = '10400'
 
-  else if(text === "พยากรณ์อากาศ 5 วันรหัสไปรษณีย์ 10120") zipCode = '10120'
+  else if(zipCode === "พยากรณ์อากาศ 5 วันรหัสไปรษณีย์ 10120") zipCode = '10120'
 
-  else if(text === "พยากรณ์อากาศ 5 วันรหัสไปรษณีย์ 10170") zipCode = '10170'
+  else if(zipCode === "พยากรณ์อากาศ 5 วันรหัสไปรษณีย์ 10170") zipCode = '10170'
 
-  else if(text === "พยากรณ์อากาศประจำวันรหัสไปรษณีย์ 10230") zipCode = '10230'
+  else if(zipCode === "พยากรณ์อากาศประจำวันรหัสไปรษณีย์ 10230") zipCode = '10230'
   
-  else if(text === "พยากรณ์อากาศประจำวันรหัสไปรษณีย์ 10400") zipCode = '10400'
+  else if(zipCode === "พยากรณ์อากาศประจำวันรหัสไปรษณีย์ 10400") zipCode = '10400'
 
-  else if(text === "พยากรณ์อากาศประจำวันรหัสไปรษณีย์ 10120") zipCode = '10120'
+  else if(zipCode === "พยากรณ์อากาศประจำวันรหัสไปรษณีย์ 10120") zipCode = '10120'
 
-  else if(text === "พยากรณ์อากาศประจำวันรหัสไปรษณีย์ 10170") zipCode = '10170'
+  else if(zipCode === "พยากรณ์อากาศประจำวันรหัสไปรษณีย์ 10170") zipCode = '10170'
   return zipCode
 }
 
@@ -1421,25 +1421,29 @@ function sendLocation (sender, text) {
     to: sender,
     messages: [
       {
-        "type": "bubble",
-        "body": {
-          "type": "box",
-          "layout": "vertical",
-          "spacing": "md",
-          "contents": [
-            {
-              "type": "button",
-              "style": "primary",
-              "action": {
-                "type": "uri",
-                "label": "ส่งตำแหน่ง",
-                "uri": "line://nv/location"
+        "type": "flex",
+        "altText": "Flex Message",
+        "contents": {
+          "type": "bubble",
+          "body": {
+            "type": "box",
+            "layout": "vertical",
+            "spacing": "md",
+            "contents": [
+              {
+                "type": "button",
+                "style": "primary",
+                "action": {
+                  "type": "uri",
+                  "label": "ส่งตำแหน่ง",
+                  "uri": "line://nv/location"
               }
             }
           ]
         }
       }
-      ]
+    }
+    ]
   }
   
   request({
