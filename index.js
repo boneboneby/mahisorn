@@ -355,13 +355,17 @@ app.post('/webhook', (req, res) => {
     isTextDaily = true;
     weatherDailyMenuCarouselTemplate(sender)
   }
-  else if (text === 'พยากรณ์อากาศประจำแบบข้อความวันตามรหัสไปรษณีย์'){
+  else if (text === 'เลือกรหัสไปรษณีย์'){
     quickReplyWeatherDailbyZipCode(sender)
-    isGeoDaily = false;
+    
+  }
+  else if (text === 'ส่งที่อยู่'){
+    sendLocation(sender)
+    
   }
   else if (text === 'พยากรณ์อากาศ 5 วันตามรหัสไปรษณีย์'){
     quickReply5daysZipCode(sender)
-    isGeo5days = false;
+    
   }
   else if (text === 'ตั้งเวลาแจ้งเตือนฝนตก'){
     quickReplyWarningForecast(sender)
@@ -491,11 +495,6 @@ function weatherDailySelectResTypeCarouselTemplate (sender, text) {
               type: "message",
               label: "กราฟ",
               text: "พยากรณ์อากาศประจำวันกราฟ"
-            },
-            {
-              type: "message",
-              label: "ตั้งแจ้งเตือนฝนตก",
-              text: "ตั้งเวลาแจ้งเตือนฝนตก"
             }
           ]
         }
@@ -544,12 +543,12 @@ function weatherDailyMenuCarouselTemplate (sender, text) {
             {
               type: "message",
               label: "เลือกรหัสไปรษณีย์",
-              text: "พยากรณ์อากาศประจำวันตามรหัสไปรษณีย์"
+              text: "เลือกรหัสไปรษณีย์"
             },
             {
-              type: "uri",
+              type: "message",
               label: "ส่งที่อยู่",
-              uri: "line://nv/location"
+              text: "ส่งที่อยู่"
             }
             
           ]
@@ -1417,6 +1416,37 @@ function translateZipCodeTH(zipCode){
 }
 
 //////////////////////////////////////////////////Translate Function///////////////////////////////////////////////////////////////////
+function sendLocation (sender, text) {
+  let data = {
+    to: sender,
+    messages: [
+      {
+            
+        type: "uri",
+        label: "ส่งที่อยู่",
+        uri: "line://nv/location"
+        }
+      ]
+    }
+  }
+  request({
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer '+CH_ACCESS_TOKEN+''
+    },
+    url: 'https://api.line.me/v2/bot/message/push',
+    method: 'POST',
+    body: data,
+    json: true
+  }, function (err, res, body) {
+    if (err) console.log('error')
+    if (res) console.log('weatherMenuCarouselTemplate : POST || Result : success')
+    if (body) console.log(body)
+  })
+} 
+
+
+
 // app.set('port', (process.env.PORT || 80))
 app.listen(app.get('port'), function () {
   console.log('run at port', app.get('port'))
