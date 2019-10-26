@@ -323,7 +323,7 @@ app.post('/webhook', (req, res) => {
         isGeoDaily = true;
         isDailyWeather = true;
         isForLop = true;
-        weatherDailyMenuCarouselTemplate(sender)
+        weatherDailySelectResTypeCarouselTemplate(sender)
         break;
         }
       }
