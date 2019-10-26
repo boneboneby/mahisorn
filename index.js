@@ -1427,8 +1427,8 @@ function sendLocation (sender, text) {
         uri: "line://nv/location"
         }
       ]
-    }
   }
+  
   request({
     headers: {
       'Content-Type': 'application/json',
