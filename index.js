@@ -1421,11 +1421,24 @@ function sendLocation (sender, text) {
     to: sender,
     messages: [
       {
-            
-        type: "uri",
-        label: "ส่งที่อยู่",
-        uri: "line://nv/location"
+        "type": "bubble",
+        "body": {
+          "type": "box",
+          "layout": "vertical",
+          "spacing": "md",
+          "contents": [
+            {
+              "type": "button",
+              "style": "primary",
+              "action": {
+                "type": "uri",
+                "label": "ส่งตำแหน่ง",
+                "uri": "line://nv/location"
+              }
+            }
+          ]
         }
+      }
       ]
   }
   
