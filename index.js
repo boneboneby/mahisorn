@@ -698,13 +698,8 @@ function weatherDailyByZipCode (sender, text) {
   else if (cityName ===  'Thawi Watthana' ) cityName = "ทวีวัฒนา";
 
   let weather = body.weather[0].description;
-  if(weather === 'light intensity drizzle'){
-    weather = "ฝนตกแดดออก"
-  }
-  else if (weather === 'scattered clouds'){
-    weather = "เมฆฝนฟ้าคะนองกระจายตัว"
-  }
   
+  weather = translateWeatherTH(weather);
   console.log('weather', weather)
   const dMsg = `พยากรณ์อากาศประจำวัน\nเขต: ${cityName}`;
   const dMsg2 = `อุณภูมิ:  ${body.main.temp} °C \nสภาพอากาศ: ${weather}  \nความชื้น : ${body.main.humidity}% \nทิศทางลม : ${body.wind.deg}° \n ความเร็วลม : ${body.wind.speed} กม./ชม. `
@@ -1341,6 +1336,7 @@ function translateWeatherTH(weather){
   else if (weather === 'scattered clouds') weather = "เมฆปกคลุมกระจายตัว";
   else if (weather === 'broken clouds') weather = "เมฆเป็นหย่อมๆ กระจายตัวกว้าง";
   else if (weather === 'light rain') weather = "ฝนตกบางเบา";
+  else if (weather === 'light intensity drizzle') weather = "ฝนตกแดดออก";
   return weather
 }
 
