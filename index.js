@@ -11,7 +11,7 @@ admin.initializeApp({
 var db = admin.database();
 var ref = db.ref("server/saving-data/UserInfo");
 
-var usersRef = ref.child("users");
+var usersRef = ref.child("GeoDaily");
 // usersRef.set({
 //   alanisawesome: {
 //     date_of_birth: "June 23, 1912",
@@ -689,17 +689,11 @@ function weatherDailyByZipCode (sender, text) {
     
                 
   let cityName = body.name;
-  if(cityName ===  'Lat Phrao' ) cityName = "ลาดพร้าว";
-  
-  else if (cityName ===  'Phaya Thai' ) cityName = "พญาไท";
-
-  else if (cityName ===  'Bang Kholaem' ) cityName = "บางคอแหลม";
-
-  else if (cityName ===  'Thawi Watthana' ) cityName = "ทวีวัฒนา";
+  cityName = translateDistrictTH(cityName);
 
   let weather = body.weather[0].description;
-  
   weather = translateWeatherTH(weather);
+
   console.log('weather', weather)
   const dMsg = `พยากรณ์อากาศประจำวัน\nเขต: ${cityName}`;
   const dMsg2 = `อุณภูมิ:  ${body.main.temp} °C \nสภาพอากาศ: ${weather}  \nความชื้น : ${body.main.humidity}% \nทิศทางลม : ${body.wind.deg}° \n ความเร็วลม : ${body.wind.speed} กม./ชม. `
@@ -741,19 +735,12 @@ function geoDaily (sender , userLat , userLon) {
         console.log('The response body after parse => ',body)
       
         
-    // let res = response;
+    
     let cityName = body.name;
-    if(cityName ===  'Lat Phrao' ) {
-      cityName = "ลาดพร้าว";
-    }
-  
+    cityName = translateDistrictTH(cityName);
+    
     let weather = body.weather[0].description;
-    if(weather === 'light intensity drizzle'){
-      weather = "ฝนตกแดดออก"
-    }
-    else if (weather === 'scattered clouds'){
-      weather = "เมฆฝนฟ้าคะนองกระจายตัว"
-    }
+    weather = translateWeatherTH(weather);
    
     console.log('weather', weather)
     const dMsg = `พยากรณ์อากาศประจำวัน\nเขต: ${cityName}`;
@@ -764,20 +751,18 @@ function geoDaily (sender , userLat , userLon) {
         console.log('Request api ERROR ')
       }
     })
+    const pushGeoWeatherDaily = async (dMsg ,dMsg2  , userId) => {
+      request.post({
+        uri: `${LINE_MESSAGING_API}/push`,
+        headers: LINE_HEADER,
+        body: JSON.stringify({
+          to: userId,
+          messages: [{ type: "text", text: dMsg }, { type: "text", text: dMsg2 }]
+        })
+      });
+      return res.status(200).send({ message: `Push: ${msg}` });
+    };
   }
-  
-  const pushGeoWeatherDaily = async (dMsg ,dMsg2  , userId) => {
-    request.post({
-      uri: `${LINE_MESSAGING_API}/push`,
-      headers: LINE_HEADER,
-      body: JSON.stringify({
-        to: userId,
-        messages: [{ type: "text", text: dMsg }, { type: "text", text: dMsg2 }]
-      })
-    });
-    return res.status(200).send({ message: `Push: ${msg}` });
-  };
-  
 //////////////////////////////////////////////////Daily Weather by Geo/////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////5days Weather by Geo/////////////////////////////////////////////////////////////
@@ -886,7 +871,7 @@ function weather5daysByZipCode (sender, text) {
 
     alldates.forEach(res => {
         let jsdate = new Date(res * 1000)
-        weatherDates.push(jsdate.toLocaleTimeString('th' , {year: 'numeric', month : 'short' , day : 'numeric'}))
+        weatherDates.push(jsdate.toLocaleTimeString('th' , {year: 'numeric', month : 'short' , day : 'numeric' , timeZone : 'Asia/Bangkok'}))
       })
       const msg5daysByDistrict1  = `พยากรณ์อากาศ 5 วัน\nเขต: ลาดพร้าว`;
       const msg5daysByDistrict2 = `วัน/เวลา: ${weatherDates[0]} \nสภาพอากาศ: ${translateWeatherTH(body.list[0].weather[0].description)} 
@@ -1329,7 +1314,7 @@ function deFaultFallback (sender, text) {
 
 //////////////////////////////////////////////////ETC.///////////////////////////////////////////////////////////////////
 
-//////////////////////////////////////////////////Function ETC///////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////Translate Function///////////////////////////////////////////////////////////////////
 function translateWeatherTH(weather){
   if(weather === 'clear sky') weather = "ท้องฟ้าปลอดโปร่ง";
   else if (weather === 'few clouds') weather = "เมฆปกคลุมบางเบา";
@@ -1340,6 +1325,19 @@ function translateWeatherTH(weather){
   return weather
 }
 
+function translateDistrictTH(cityName){
+  if(cityName ===  'Lat Phrao' ) cityName = "ลาดพร้าว";
+  
+  else if (cityName ===  'Phaya Thai' ) cityName = "พญาไท";
+
+  else if (cityName ===  'Bang Kholaem' ) cityName = "บางคอแหลม";
+
+  else if (cityName ===  'Thawi Watthana' ) cityName = "ทวีวัฒนา";
+
+  return cityName
+}
+
+//////////////////////////////////////////////////Translate Function///////////////////////////////////////////////////////////////////
 // app.set('port', (process.env.PORT || 80))
 app.listen(app.get('port'), function () {
   console.log('run at port', app.get('port'))
