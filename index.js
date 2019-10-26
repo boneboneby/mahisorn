@@ -54,6 +54,12 @@ let isGeo5days = false;
 let isGenPicDaily = false;
 let isGenPic5days = false;
 
+let isTextDaily = false;
+let isText5days = false;
+
+let isGraphDaily = false;
+let isGraph5days = false;
+
 let isForLop = false;
 
 
@@ -331,7 +337,7 @@ app.post('/webhook', (req, res) => {
     for ( i=0;i  < wordDailyByZipCode.length ;  i++ ){
       if (wordDailyByZipCode[i]==text) {
         isForLop = true;
-        weatherDailyByZipCode(sender,text)
+        if(isTextDaily) weatherDailyByZipCodeText(sender,text);
         break;
         }
       }
@@ -345,10 +351,11 @@ app.post('/webhook', (req, res) => {
         }
     
     
-  if (text === 'แผ่นดินทอง' ) {
-    pandinthongCarousel(sender)
+  if (text === 'พยากรณ์อากาศประจำวันข้อความ' ) {
+    isTextDaily = true;
+    weatherDailyMenuCarouselTemplate(sender)
   }
-  else if (text === 'พยากรณ์อากาศประจำวันตามรหัสไปรษณีย์'){
+  else if (text === 'พยากรณ์อากาศประจำแบบข้อความวันตามรหัสไปรษณีย์'){
     quickReplyWeatherDailbyZipCode(sender)
     isGeoDaily = false;
   }
@@ -366,6 +373,9 @@ app.post('/webhook', (req, res) => {
   }
   else if (text === 'สินเชื่อ ธกส.' || text === 'สินเชื่อ' ) {
     creditBAAC(sender)
+  }
+  else if (text === 'แผ่นดินทอง' ) {
+    pandinthongCarousel(sender)
   }
   else if (text === 'สินเชื่อส่วนบุคคล') {
     personalCredit(sender)
@@ -385,7 +395,6 @@ app.post('/webhook', (req, res) => {
 })
 ////////////////////////////////////////////////User Message Invoke////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////Function handle User Message//////////////////////////////////////////////
 
 ////////////////////////////////////////////////Starter Carousel Weather////////////////////////////////////////////////////
 function weatherMenuCarouselTemplate (sender, text) {
@@ -445,6 +454,70 @@ function weatherMenuCarouselTemplate (sender, text) {
   })
 } 
 ///////////////////////////////////////////////Starter Carousel Weather////////////////////////////////////////////////////
+
+
+function weatherDailySelectResTypeCarouselTemplate (sender, text) {
+  let data = {
+    to: sender,
+    messages: [
+      {
+        type: "template",
+        altText: "This is a buttons template",
+        template: {
+        type: "buttons",
+        thumbnailImageUrl: "https://sv1.picz.in.th/images/2019/10/21/cIocp0.jpg",
+        imageAspectRatio: "rectangle",
+        imageSize: "cover",
+        imageBackgroundColor: "#FFFFFF",
+        title: "พยากรณ์อากาศประจำวัน",
+        text: "กรุณาเลือกรายการ",
+        defaultAction: {
+            type: "uri",
+            label: "View detail",
+            uri: "https://www.google.com"
+        },
+        actions: [
+            {
+              type: "message",
+              label: "ข้อความ",
+              text: "พยากรณ์อากาศประจำวันข้อความ"
+            },
+            {
+              type: "message",
+              label: "รูปภาพ",
+              text: "พยากรณ์อากาศประจำวันรูปภาพ"
+            },
+            {
+              type: "message",
+              label: "กราฟ",
+              text: "พยากรณ์อากาศประจำวันกราฟ"
+            },
+            {
+              type: "message",
+              label: "ตั้งแจ้งเตือนฝนตก",
+              text: "ตั้งเวลาแจ้งเตือนฝนตก"
+            }
+          ]
+        }
+      }
+    ]
+  }
+  request({
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer '+CH_ACCESS_TOKEN+''
+    },
+    url: 'https://api.line.me/v2/bot/message/push',
+    method: 'POST',
+    body: data,
+    json: true
+  }, function (err, res, body) {
+    if (err) console.log('error')
+    if (res) console.log('weatherMenuCarouselTemplate : POST || Result : success')
+    if (body) console.log(body)
+  })
+} 
+
 
 ///////////////////////////////////////////////Daily Carousel Weather////////////////////////////////////////////////////
 function weatherDailyMenuCarouselTemplate (sender, text) {
@@ -669,7 +742,8 @@ function quickReplyWeatherDailbyZipCode (sender, text) {
 
 //////////////////////////////////////////////////Daily Weather by Destrict///////////////////////////////////////////////
 
-function weatherDailyByZipCode (sender, text) {
+function weatherDailyByZipCodeText (sender, text) {
+  isTextDaily = false;
   let eachCaseDestrict = '';
   eachCaseDestrict = translateZipCodeTH(eachCaseDestrict);
 
