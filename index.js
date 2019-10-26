@@ -671,13 +671,7 @@ function quickReplyWeatherDailbyZipCode (sender, text) {
 
 function weatherDailyByZipCode (sender, text) {
   let eachCaseDestrict = '';
-  if(text === "พยากรณ์อากาศประจำวันรหัสไปรษณีย์ 10230") eachCaseDestrict = '10230'
-  
-  else if(text === "พยากรณ์อากาศประจำวันรหัสไปรษณีย์ 10400") eachCaseDestrict = '10400'
-
-  else if(text === "พยากรณ์อากาศประจำวันรหัสไปรษณีย์ 10120") eachCaseDestrict = '10120'
-
-  else if(text === "พยากรณ์อากาศประจำวันรหัสไปรษณีย์ 10170") eachCaseDestrict = '10170'
+  eachCaseDestrict = translateZipCodeTH(eachCaseDestrict);
 
   
   let urlDailyByRestrici = `${urlDailyForecastByDistrict}${eachCaseDestrict},th`
@@ -843,14 +837,7 @@ function quickReply5daysZipCode (sender, text) {
 
 function weather5daysByZipCode (sender, text) {
   let eachCase5daysDistrict = '';
-  if(text === "พยากรณ์อากาศ 5 วันรหัสไปรษณีย์ 10230") eachCase5daysDistrict = '10230'
-  
-  else if(text === "พยากรณ์อากาศ 5 วันรหัสไปรษณีย์ 10400") eachCase5daysDistrict = '10400'
-
-  else if(text === "พยากรณ์อากาศ 5 วันรหัสไปรษณีย์ 10120") eachCase5daysDistrict = '10120'
-
-  else if(text === "พยากรณ์อากาศ 5 วันรหัสไปรษณีย์ 10170") eachCase5daysDistrict = '10170'
-
+  eachCase5daysDistrict = translateZipCodeTH(eachCase5daysDistrict);
   
   let url5daysByDistrict = `${url5daysForecastByDistrict}${eachCase5daysDistrict},th`
   request(url5daysByDistrict, function (error, response, body) {
@@ -1272,7 +1259,6 @@ function sendGreetingMessage (sender, text) {
   })
 }
 
-
 function deFaultFallback (sender, text) {
   randomGreetingNum = getRandomInt(3);
   let fallbackMsg = "";
@@ -1335,6 +1321,25 @@ function translateDistrictTH(cityName){
   else if (cityName ===  'Thawi Watthana' ) cityName = "ทวีวัฒนา";
 
   return cityName
+}
+
+function translateZipCodeTH(zipCode){
+  if(text === "พยากรณ์อากาศ 5 วันรหัสไปรษณีย์ 10230") zipCode = '10230'
+  
+  else if(text === "พยากรณ์อากาศ 5 วันรหัสไปรษณีย์ 10400") zipCode = '10400'
+
+  else if(text === "พยากรณ์อากาศ 5 วันรหัสไปรษณีย์ 10120") zipCode = '10120'
+
+  else if(text === "พยากรณ์อากาศ 5 วันรหัสไปรษณีย์ 10170") zipCode = '10170'
+
+  else if(text === "พยากรณ์อากาศประจำวันรหัสไปรษณีย์ 10230") zipCode = '10230'
+  
+  else if(text === "พยากรณ์อากาศประจำวันรหัสไปรษณีย์ 10400") zipCode = '10400'
+
+  else if(text === "พยากรณ์อากาศประจำวันรหัสไปรษณีย์ 10120") zipCode = '10120'
+
+  else if(text === "พยากรณ์อากาศประจำวันรหัสไปรษณีย์ 10170") zipCode = '10170'
+  return zipCode
 }
 
 //////////////////////////////////////////////////Translate Function///////////////////////////////////////////////////////////////////
