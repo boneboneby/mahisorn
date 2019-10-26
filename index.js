@@ -894,27 +894,27 @@ function weather5daysByZipCode (sender, text) {
         weatherDates.push(jsdate.toLocaleTimeString('th' , {year: 'numeric', month : 'short' , day : 'numeric'}))
       })
       const msg5daysByDistrict1  = `พยากรณ์อากาศ 5 วัน\nเขต: ลาดพร้าว`;
-      const msg5daysByDistrict2 = `วัน/เวลา: ${weatherDates[0]} \nสภาพอากาศ:  ${body.list[0].weather[0].description} 
-      \nวัน/เวลา: ${weatherDates[1]} \nอุณภูมิ:  ${body.list[1].main.temp} องศา \nสภาพอากาศ:  ${body.list[1].weather[0].description}
-      \nวัน/เวลา: ${weatherDates[2]} \nอุณภูมิ:  ${body.list[2].main.temp} องศา \nสภาพอากาศ:  ${body.list[2].weather[0].description}
-      \nวัน/เวลา: ${weatherDates[3]} \nอุณภูมิ:  ${body.list[3].main.temp} องศา \nสภาพอากาศ:  ${body.list[3].weather[0].description}
-      \nวัน/เวลา: ${weatherDates[4]} \nอุณภูมิ:  ${body.list[4].main.temp} องศา \nสภาพอากาศ:  ${body.list[4].weather[0].description}
-      \nวัน/เวลา: ${weatherDates[5]} \nอุณภูมิ:  ${body.list[5].main.temp} องศา \nสภาพอากาศ:  ${body.list[5].weather[0].description}
-      \nวัน/เวลา: ${weatherDates[6]} \nอุณภูมิ:  ${body.list[6].main.temp} องศา \nสภาพอากาศ:  ${body.list[6].weather[0].description}
-      \nวัน/เวลา: ${weatherDates[7]} \nอุณภูมิ:  ${body.list[7].main.temp} องศา \nสภาพอากาศ:  ${body.list[7].weather[0].description}
-      \nวัน/เวลา: ${weatherDates[8]} \nอุณภูมิ:  ${body.list[8].main.temp} องศา \nสภาพอากาศ:  ${body.list[8].weather[0].description}
-      \nวัน/เวลา: ${weatherDates[9]} \nอุณภูมิ:  ${body.list[9].main.temp} องศา \nสภาพอากาศ:  ${body.list[9].weather[0].description}
-      \nวัน/เวลา: ${weatherDates[10]} \nอุณภูมิ:  ${body.list[10].main.temp} องศา \nสภาพอากาศ:  ${body.list[10].weather[0].description}
-      \nวัน/เวลา: ${weatherDates[11]} \nอุณภูมิ:  ${body.list[11].main.temp} องศา \nสภาพอากาศ:  ${body.list[11].weather[0].description}
-      \nวัน/เวลา: ${weatherDates[12]} \nอุณภูมิ:  ${body.list[12].main.temp} องศา \nสภาพอากาศ:  ${body.list[12].weather[0].description}
-      \nวัน/เวลา: ${weatherDates[13]} \nอุณภูมิ:  ${body.list[13].main.temp} องศา \nสภาพอากาศ:  ${body.list[13].weather[0].description}
-      \nวัน/เวลา: ${weatherDates[14]} \nอุณภูมิ:  ${body.list[14].main.temp} องศา \nสภาพอากาศ:  ${body.list[14].weather[0].description}
-      \nวัน/เวลา: ${weatherDates[15]} \nอุณภูมิ:  ${body.list[15].main.temp} องศา \nสภาพอากาศ:  ${body.list[15].weather[0].description}
-      \nวัน/เวลา: ${weatherDates[16]} \nอุณภูมิ:  ${body.list[16].main.temp} องศา \nสภาพอากาศ:  ${body.list[16].weather[0].description}
-      \nวัน/เวลา: ${weatherDates[17]} \nอุณภูมิ:  ${body.list[17].main.temp} องศา \nสภาพอากาศ:  ${body.list[17].weather[0].description}
-      \nวัน/เวลา: ${weatherDates[18]} \nอุณภูมิ:  ${body.list[18].main.temp} องศา \nสภาพอากาศ:  ${body.list[18].weather[0].description}
-      \nวัน/เวลา: ${weatherDates[19]} \nอุณภูมิ:  ${body.list[19].main.temp} องศา \nสภาพอากาศ:  ${body.list[19].weather[0].description}
-      \nวัน/เวลา: ${weatherDates[20]} \nอุณภูมิ:  ${body.list[20].main.temp} องศา \nสภาพอากาศ:  ${body.list[20].weather[0].description}`
+      const msg5daysByDistrict2 = `วัน/เวลา: ${weatherDates[0]} \nสภาพอากาศ: ${translateWeatherTH(body.list[0].weather[0].description)} 
+      \nวัน/เวลา: ${weatherDates[1]} \nอุณภูมิ:  ${body.list[1].main.temp} องศา \nสภาพอากาศ:  ${translateWeatherTH(body.list[1].weather[0].description)}
+      \nวัน/เวลา: ${weatherDates[2]} \nอุณภูมิ:  ${body.list[2].main.temp} องศา \nสภาพอากาศ:  ${translateWeatherTH(body.list[2].weather[0].description)}
+      \nวัน/เวลา: ${weatherDates[3]} \nอุณภูมิ:  ${body.list[3].main.temp} องศา \nสภาพอากาศ:  ${translateWeatherTH(body.list[3].weather[0].description)}
+      \nวัน/เวลา: ${weatherDates[4]} \nอุณภูมิ:  ${body.list[4].main.temp} องศา \nสภาพอากาศ:  ${translateWeatherTH(body.list[4].weather[0].description)}
+      \nวัน/เวลา: ${weatherDates[5]} \nอุณภูมิ:  ${body.list[5].main.temp} องศา \nสภาพอากาศ:  ${translateWeatherTH(body.list[5].weather[0].description)}
+      \nวัน/เวลา: ${weatherDates[6]} \nอุณภูมิ:  ${body.list[6].main.temp} องศา \nสภาพอากาศ:  ${translateWeatherTH(body.list[6].weather[0].description)}
+      \nวัน/เวลา: ${weatherDates[7]} \nอุณภูมิ:  ${body.list[7].main.temp} องศา \nสภาพอากาศ:  ${translateWeatherTH(body.list[7].weather[0].description)}
+      \nวัน/เวลา: ${weatherDates[8]} \nอุณภูมิ:  ${body.list[8].main.temp} องศา \nสภาพอากาศ:  ${translateWeatherTH(body.list[8].weather[0].description)}
+      \nวัน/เวลา: ${weatherDates[9]} \nอุณภูมิ:  ${body.list[9].main.temp} องศา \nสภาพอากาศ:  ${translateWeatherTH(body.list[9].weather[0].description)}
+      \nวัน/เวลา: ${weatherDates[10]} \nอุณภูมิ:  ${body.list[10].main.temp} องศา \nสภาพอากาศ:  ${translateWeatherTH(body.list[10].weather[0].description)}
+      \nวัน/เวลา: ${weatherDates[11]} \nอุณภูมิ:  ${body.list[11].main.temp} องศา \nสภาพอากาศ:  ${translateWeatherTH(body.list[11].weather[0].description)}
+      \nวัน/เวลา: ${weatherDates[12]} \nอุณภูมิ:  ${body.list[12].main.temp} องศา \nสภาพอากาศ:  ${translateWeatherTH(body.list[12].weather[0].description)}
+      \nวัน/เวลา: ${weatherDates[13]} \nอุณภูมิ:  ${body.list[13].main.temp} องศา \nสภาพอากาศ:  ${translateWeatherTH(body.list[13].weather[0].description)}
+      \nวัน/เวลา: ${weatherDates[14]} \nอุณภูมิ:  ${body.list[14].main.temp} องศา \nสภาพอากาศ:  ${translateWeatherTH(body.list[14].weather[0].description)}
+      \nวัน/เวลา: ${weatherDates[15]} \nอุณภูมิ:  ${body.list[15].main.temp} องศา \nสภาพอากาศ:  ${translateWeatherTH(body.list[15].weather[0].description)}
+      \nวัน/เวลา: ${weatherDates[16]} \nอุณภูมิ:  ${body.list[16].main.temp} องศา \nสภาพอากาศ:  ${translateWeatherTH(body.list[16].weather[0].description)}
+      \nวัน/เวลา: ${weatherDates[17]} \nอุณภูมิ:  ${body.list[17].main.temp} องศา \nสภาพอากาศ:  ${translateWeatherTH(body.list[17].weather[0].description)}
+      \nวัน/เวลา: ${weatherDates[18]} \nอุณภูมิ:  ${body.list[18].main.temp} องศา \nสภาพอากาศ:  ${translateWeatherTH(body.list[18].weather[0].description)}
+      \nวัน/เวลา: ${weatherDates[19]} \nอุณภูมิ:  ${body.list[19].main.temp} องศา \nสภาพอากาศ:  ${translateWeatherTH(body.list[19].weather[0].description)}
+      \nวัน/เวลา: ${weatherDates[20]} \nอุณภูมิ:  ${body.list[20].main.temp} องศา \nสภาพอากาศ:  ${translateWeatherTH(body.list[20].weather[0].description)}`
      
       const msg5daysByDistrict3 = `วัน/เวลา: ${body.list[21].dt_txt} \nอุณภูมิ:  ${body.list[21].main.temp} องศา \nสภาพอากาศ:  ${body.list[21].weather[0].description}
       \nวัน/เวลา: ${body.list[22].dt_txt} \nอุณภูมิ:  ${body.list[22].main.temp} องศา \nสภาพอากาศ:  ${body.list[22].weather[0].description}
@@ -928,7 +928,7 @@ function weather5daysByZipCode (sender, text) {
       \nวัน/เวลา: ${body.list[30].dt_txt} \nอุณภูมิ:  ${body.list[30].main.temp} องศา \nสภาพอากาศ:  ${body.list[30].weather[0].description}
       \nวัน/เวลา: ${body.list[31].dt_txt} \nอุณภูมิ:  ${body.list[31].main.temp} องศา \nสภาพอากาศ:  ${body.list[31].weather[0].description}
       \nวัน/เวลา: ${body.list[32].dt_txt} \nอุณภูมิ:  ${body.list[32].main.temp} องศา \nสภาพอากาศ:  ${body.list[32].weather[0].description}
-      \nวัน/เวลา: ${body.list[33].dt_txt} \n ุณภูมิ:  ${body.list[33].main.temp} องศา \nสภาพอากาศ:  ${body.list[33].weather[0].description}
+      \nวัน/เวลา: ${body.list[33].dt_txt} \nอุณภูมิ:  ${body.list[33].main.temp} องศา \nสภาพอากาศ:  ${body.list[33].weather[0].description}
       \nวัน/เวลา: ${body.list[34].dt_txt} \nอุณภูมิ:  ${body.list[34].main.temp} องศา \nสภาพอากาศ:  ${body.list[34].weather[0].description}
       \nวัน/เวลา: ${body.list[35].dt_txt} \nอุณภูมิ:  ${body.list[35].main.temp} องศา \nสภาพอากาศ:  ${body.list[35].weather[0].description}
       \nวัน/เวลา: ${body.list[36].dt_txt} \nอุณภูมิ:  ${body.list[36].main.temp} องศา \nสภาพอากาศ:  ${body.list[36].weather[0].description}
@@ -956,14 +956,7 @@ function weather5daysByZipCode (sender, text) {
 //////////////////////////////////////////////////5days Weather by District///////////////////////////////////////////////
 
 
-
-
-
-
-
-
-
-
+//////////////////////////////////////////////////ETC.///////////////////////////////////////////////////////////////////
 function pandinthongCarousel (sender, text) {
   let data = {
     to: sender,
@@ -1339,7 +1332,19 @@ function deFaultFallback (sender, text) {
   })
 }
 
-////////////////////////////////////////////////Function handle User Message//////////////////////////////////////////////
+//////////////////////////////////////////////////ETC.///////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////Function ETC///////////////////////////////////////////////////////////////////
+function translateWeatherTH(weather){
+  if(weather === 'clear sky') weather = "ท้องฟ้าปลอดโปร่ง";
+  else if (weather === 'few clouds') weather = "เมฆปกคลุมบางเบา";
+  else if (weather === 'scattered clouds') weather = "เมฆปกคลุมกระจายตัว";
+  else if (weather === 'broken clouds') weather = "เมฆเป็นหย่อมๆ กระจายตัวกว้าง";
+  else if (weather === 'light rain') weather = "ฝนตกบางเบา";
+  return weather
+}
+
+// app.set('port', (process.env.PORT || 80))
 app.listen(app.get('port'), function () {
   console.log('run at port', app.get('port'))
 })
