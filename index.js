@@ -47,12 +47,15 @@ const https = require('https')
 
 let isDailyWeather = false;
 let is5daysWeather = false;
-let isRestrictDaily = false;
+
 let isGeoDaily = false;
 let isGeo5days = false;
+
+let isGenPicDaily = false;
+let isGenPic5days = false;
+
 let isForLop = false;
-let isGreetingMsgT1 = false;
-let isGreetingMsgT2 = false;
+
 
 //////////////////////////////////////////////////Boolean Status//////////////////////////////////////////////////////////
 
@@ -98,7 +101,7 @@ const CH_ACCESS_TOKEN = '3ZP9XTq2s8J/phgB9G6NJkUX+3yKi0f2Ydt+FbDX9sgpnzjnjVd6DhA
 //////////////////////////////////////////////////LINE Enclapsulated//////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////Generate img/////////////////////////////////////////
-function requestImg (sender , userLat , userLon){
+function requestImg5days (sender , userLat , userLon){
   var linkImg = "";
   let url5daysByGeo = `https://api.openweathermap.org/data/2.5/forecast/?lat=${userLat}&lon=${userLon}&appid=686d2c96c7002be9b1e714457eac2caf&units=metric&type=accurate`;
   request(url5daysByGeo, function (error, response, body) {
@@ -294,7 +297,7 @@ app.post('/webhook', (req, res) => {
   else if (type === 'location' && isGeo5days){
     console.log('Function Geo5days Started')
     geo5days(sender , userLat , userLon )
-    requestImg(sender , userLat , userLon)
+    requestImg5days(sender , userLat , userLon)
     isGeo5days = false;
 
   }
@@ -935,18 +938,19 @@ function weather5daysByZipCode (sender, text) {
       return push5daysByDistrict( msg5daysByDistrict1 , msg5daysByDistrict2 , msg5daysByDistrict3, sender);
       
     })
+    let push5daysByDistrict = async  (msg5daysByDistrict1 , msg5daysByDistrict2 , msg5daysByDistrict3, userId ) => {
+      request.post({
+        uri: `${LINE_MESSAGING_API}/push`,
+        headers: LINE_HEADER,
+        body: JSON.stringify({
+          to: userId,
+          messages: [{ type: "text", text: msg5daysByDistrict1 }, { type: "text", text: msg5daysByDistrict2 } , { type: "text", text: msg5daysByDistrict3 }]
+        })
+      });
+      return res.status(200).send({ message: `Push: ${msg}` });
+    };
     }
-      let push5daysByDistrict = async  (msg5daysByDistrict1 , msg5daysByDistrict2 , msg5daysByDistrict3, userId ) => {
-        request.post({
-          uri: `${LINE_MESSAGING_API}/push`,
-          headers: LINE_HEADER,
-          body: JSON.stringify({
-            to: userId,
-            messages: [{ type: "text", text: msg5daysByDistrict1 }, { type: "text", text: msg5daysByDistrict2 } , { type: "text", text: msg5daysByDistrict3 }]
-          })
-        });
-        return res.status(200).send({ message: `Push: ${msg}` });
-      };
+      
       
 
 //////////////////////////////////////////////////5days Weather by District///////////////////////////////////////////////
