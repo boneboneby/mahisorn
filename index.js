@@ -422,6 +422,8 @@ app.post('/webhook', (req, res) => {
   }
   else {
     if(!isForLop){
+      // flexGeoWeather(sender);
+      flexDailyWeather(sender);
       deFaultFallback(sender, text);
       usersID.on("value", function(snapshot) {
         console.log(snapshot.val());
@@ -1490,7 +1492,7 @@ function sendNearestLoc (sender, userLat , userLon) {
     messages: [
       {
         type: "location",
-        title: "Test",
+        title: "ATM ธนาคาร ธ.ก.ส. near me",
         address: "ATM ธนาคาร ธ.ก.ส. near me",
         latitude: userLat,
         longitude: userLon
@@ -1559,6 +1561,8 @@ function translateZipCodeTH(zipCode){
 }
 
 //////////////////////////////////////////////////Translate Function///////////////////////////////////////////////////////////////////
+
+/////////////////////////Button Send Location
 function sendLocation (sender, text) {
   let data = {
     to: sender,
@@ -1605,6 +1609,343 @@ function sendLocation (sender, text) {
   })
 } 
 
+/////////////////////////Button Send Location
+
+
+//////////////////////////Flex Msg Daily Weather
+function flexGeoWeather (sender, text ) {
+  let urlSpecFlex = 'https://api.openweathermap.org/data/2.5/forecast/?appid=686d2c96c7002be9b1e714457eac2caf&units=metric&type=accurate&lat=13.832873405469542&lon=100.61856782191913';
+  request(urlSpecFlex, function (error, response, body) {
+    if (!error && response.statusCode == 200) {
+      body = JSON.parse(body);
+      console.log('Request api success ')
+      console.log('The response body after parse => ',body)
+    
+                
+  
+
+  let weatherF1 = translateWeatherToImg(body.list[0].weather[0].description);
+  let weatherF2 = translateWeatherToImg(body.list[9].weather[0].description);
+  let weatherF3 = translateWeatherToImg(body.list[17].weather[0].description);
+  let weatherF4 = translateWeatherToImg(body.list[25].weather[0].description);
+  let weatherF5 = translateWeatherToImg(body.list[30].weather[0].description);
+  
+  let DayF1WeatherTranslate = translateWeatherTH(body.list[0].weather[0].description);
+  let DayF2WeatherTranslate = translateWeatherTH(body.list[9].weather[0].description);
+  let DayF3WeatherTranslate = translateWeatherTH(body.list[17].weather[0].description)
+  let DayF4WeatherTranslate = translateWeatherTH(body.list[25].weather[0].description)
+  let DayF5WeatherTranslate = translateWeatherTH(body.list[33].weather[0].description)
+
+  let data = {
+    to: sender,
+    messages: [
+      {
+        "type": "flex",
+        "altText": "this is a flex message",
+        "contents": {
+            
+              "type": "bubble",
+              "styles": {
+                "header": {
+                  "backgroundColor": "#2A550C"
+                },
+                "body": {
+                  "backgroundColor": "#54BB0D"
+                },
+                "footer": {
+                  "backgroundColor": "#5FC518"
+                }
+              },
+              "header": {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    
+                    "type": "text",
+                    "text": "พยากรณ์อากาศ ^^",
+                    "size": "lg", //md lg xl 
+                    "align": "center",
+                    "color": "#FEFBFA"
+                  }
+                ]
+              },
+              // "hero": {
+              //   "type": "image",
+              //   "url": "https://example.com/flex/images/image.jpg",
+              //   "size": "full",
+              //   "aspectRatio": "2:1"
+              // },
+              "body": {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                {
+                  "type": "box",
+                  "layout": "baseline",
+                  "contents": [
+                    {
+                      "type": "icon",
+                      "url": weatherF1,
+                      "size": "lg"
+                    },
+                    {
+                      "type": "text",
+                      "text": DayF1WeatherTranslate,
+                      "size": "lg"
+                    }
+                  ]
+                },
+                {
+                  "type": "box",
+                  "layout": "baseline",
+                  "contents": [
+                    {
+                      "type": "icon",
+                      "url": weatherF2,
+                      "size": "lg"
+                    },
+                    {
+                      "type": "text",
+                      "text": DayF2WeatherTranslate,
+                      "size": "lg"
+                    }
+                  ]
+                },
+                {
+                  "type": "box",
+                  "layout": "baseline",
+                  "contents": [
+                    {
+                      "type": "icon",
+                      "url":weatherF3,
+                      "size": "lg"
+                    },
+                    {
+                      "type": "text",
+                      "text": DayF3WeatherTranslate,
+                      "size": "lg"
+                    }
+                  ]
+                },
+                {
+                  "type": "box",
+                  "layout": "baseline",
+                  "contents": [
+                    {
+                      "type": "icon",
+                      "url": weatherF4,
+                      "size": "lg"
+                    },
+                    {
+                      "type": "text",
+                      "text": DayF4WeatherTranslate,
+                      "size": "lg"
+                    }
+                  ]
+                },
+                {
+                  "type": "box",
+                  "layout": "baseline",
+                  "contents": [
+                    {
+                      "type": "icon",
+                      "url": weatherF5,
+                      "size": "lg"
+                    },
+                    {
+                      "type": "text",
+                      "text": DayF5WeatherTranslate,
+                      "size": "lg"
+                    }
+                  ]
+                }
+              ]
+              },
+              "footer": {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "footer"
+                  }
+                ]
+              }
+          }
+        }
+        ]
+        
+      }
+    
+    
+  request({
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer '+CH_ACCESS_TOKEN+''
+    },
+    url: 'https://api.line.me/v2/bot/message/push',
+    method: 'POST',
+    body: data,
+    json: true
+  }, function (err, res, body) {
+    if (err) console.log('error')
+    if (res) console.log('weatherMenuCarouselTemplate : POST || Result : success')
+    if (body) console.log(body)
+  })
+} else console.log('Request url failed', urlDailyByRestrici)
+})
+}
+
+function translateWeatherToImg(weatherToImg){
+  if(weatherToImg === 'clear sky') weatherToImg = "https://sv1.picz.in.th/images/2019/10/28/ghN6wE.th.png";
+  else if (weatherToImg === 'few clouds') weatherToImg = "https://sv1.picz.in.th/images/2019/10/28/ghNIhJ.th.png";
+  else if (weatherToImg === 'scattered clouds') weatherToImg = "https://sv1.picz.in.th/images/2019/10/28/ghBene.th.png";
+  // else if (weatherToImg === 'broken clouds') weatherToImg = "เมฆเป็นหย่อมๆ กระจายตัวกว้าง";
+  // else if (weatherToImg === 'light rain') weatherToImg = "ฝนตกบางเบา";
+  // else if (weatherToImg === 'light intensity drizzle') weatherToImg = "ฝนตกแดดออก";
+  // else if (weatherToImg === 'moderate rain') weatherToImg = "ฝนตกหนัก";
+  // else if (weatherToImg === 'overcast clouds') weatherToImg = "เมฆปกคลุมหนาแน่น";
+  else weatherToImg = 'https://sv1.picz.in.th/images/2019/10/28/ghkzWW.th.png'
+  return weatherToImg
+}
+//////////////////////////Flex Msg Daily Weather
+
+function flexDailyWeather (sender, text ) {
+  let urlSpecFlex = 'https://api.openweathermap.org/data/2.5/weather/?appid=686d2c96c7002be9b1e714457eac2caf&units=metric&type=accurate&&zip=10230,th';
+  request(urlSpecFlex, function (error, response, body) {
+    if (!error && response.statusCode == 200) {
+      body = JSON.parse(body);
+      console.log('Request api success ')
+      console.log('The response body after parse => ',body)
+    
+      let cityName = body.name;
+      cityName = translateDistrictTH(cityName);
+    
+      let weather = body.weather[0].description;
+      
+    
+      console.log('weather', weather)
+      
+  
+      let data = {
+    to: sender,
+    messages: [
+      {
+        "type": "flex",
+        "altText": "this is a flex message",
+        "contents": {
+            
+              "type": "bubble",
+              "styles": {
+                "header": {
+                  "backgroundColor": "#2A550C"
+                },
+                "body": {
+                  "backgroundColor": "#54BB0D"
+                },
+                "footer": {
+                  "backgroundColor": "#5FC518"
+                }
+              },
+              "header": {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    
+                    "type": "text",
+                    "text": "พยากรณ์อากาศ ^^",
+                    "size": "lg", //md lg xl 
+                    "align": "center",
+                    "color": "#FEFBFA"
+                  }
+                ]
+              },
+              // "hero": {
+              //   "type": "image",
+              //   "url": "https://example.com/flex/images/image.jpg",
+              //   "size": "full",
+              //   "aspectRatio": "2:1"
+              // },
+              "body": {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                {
+                  "type": "box",
+                  "layout": "baseline",
+                  "contents": [
+                    {
+                      "type": "text",
+                      "text": 'เขต : '+cityName,
+                      "size": "lg"
+                    }
+                  ]
+                },
+                {
+                  "type": "box",
+                  "layout": "baseline",
+                  "contents": [
+                    {
+                      "type": "icon",
+                      "url": translateWeatherToImg(body.weather[0].description),
+                      "size": "lg"
+                    },
+                    {
+                      "type": "text",
+                      "text": "  "+translateWeatherTH(body.weather[0].description),
+                      "size": "lg"
+                    }
+                  ]
+                },
+                {
+                  "type": "box",
+                  "layout": "baseline",
+                  "contents": [
+                    {
+                      "type": "text",
+                      "text": body.main.temp + '°C',
+                      "size": "lg"
+                    }
+                  ]
+                }
+              ]
+              },
+              "footer": {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "footer"
+                  }
+                ]
+              }
+          }
+        }
+        ]
+        
+      }
+    
+    
+  request({
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer '+CH_ACCESS_TOKEN+''
+    },
+    url: 'https://api.line.me/v2/bot/message/push',
+    method: 'POST',
+    body: data,
+    json: true
+  }, function (err, res, body) {
+    if (err) console.log('error')
+    if (res) console.log('weatherMenuCarouselTemplate : POST || Result : success')
+    if (body) console.log(body)
+  })
+} else console.log('Request url failed', urlDailyByRestrici)
+})
+}
 
 
 app.set('port', (process.env.PORT || 80))
