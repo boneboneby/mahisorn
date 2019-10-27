@@ -107,7 +107,7 @@ const CH_ACCESS_TOKEN = '3ZP9XTq2s8J/phgB9G6NJkUX+3yKi0f2Ydt+FbDX9sgpnzjnjVd6DhA
 //////////////////////////////////////////////////LINE Enclapsulated//////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////Generate img/////////////////////////////////////////
-function requestImg5days (sender , userLat , userLon){
+function requestImg5days (sender , userLat , userLon ){
   var linkImg = "";
   let url5daysByGeo = `https://api.openweathermap.org/data/2.5/forecast/?lat=${userLat}&lon=${userLon}&appid=686d2c96c7002be9b1e714457eac2caf&units=metric&type=accurate`;
   request(url5daysByGeo, function (error, response, body) {
@@ -298,7 +298,7 @@ app.post('/webhook', (req, res) => {
   if(type === 'location' && isDailyWeather){
     if(isGeoDaily){
       geoDaily(sender , userLat , userLon )
-      
+      requestImg5days(sender , userLat , userLon )
       isGeoDaily = false;
       isDailyWeather = false;
     }
@@ -306,8 +306,8 @@ app.post('/webhook', (req, res) => {
   }
   else if (type === 'location' && isGeo5days){
     console.log('Function Geo5days Started')
-    geo5days(sender , userLat , userLon )
-    requestImg5days(sender , userLat , userLon)
+    geo5days(sender , userLat , userLon)
+    is5daysWeather = false;
     isGeo5days = false;
 
   }
@@ -356,7 +356,7 @@ app.post('/webhook', (req, res) => {
     
     
   
-  if (text === 'เลือกรหัสไปรษณีย์'){
+  if (text === 'พยากรณ์อากาศประจำวันตามรหัสไปรษณีย์'){
     quickReplyWeatherDailbyZipCode(sender)
     
   }
@@ -1392,6 +1392,8 @@ function translateWeatherTH(weather){
   else if (weather === 'broken clouds') weather = "เมฆเป็นหย่อมๆ กระจายตัวกว้าง";
   else if (weather === 'light rain') weather = "ฝนตกบางเบา";
   else if (weather === 'light intensity drizzle') weather = "ฝนตกแดดออก";
+  else if (weather === 'moderate rain') weather = "ฝนตกหนัก";
+  else if (weather === 'overcast clouds') weather = "เมฆปกคลุมหนาแน่น";
   return weather
 }
 
