@@ -394,10 +394,16 @@ app.post('/webhook', (req, res) => {
   else {
     if(!isForLop){
       deFaultFallback(sender, text);
+      usersRef.on("value", function(snapshot) {
+        console.log(snapshot.val());
+      }, function (errorObject) {
+        console.log("The read failed: " + errorObject.code);
+      });
       usersRef.child(sender).set({
         isStatusTest: "false",
         isLastError: "true" ,
-        text: text
+        text: text,
+        errorTimes: 0
       });
     }
   }
