@@ -417,7 +417,7 @@ app.post('/webhook', (req, res) => {
   else {
     if(!isForLop){
       deFaultFallback(sender, text);
-      usersID.on("value", function(snapshot) {
+      usersID.once("isStatusTest", function(snapshot) {
         console.log(snapshot.val());
       }, function (errorObject) {
         console.log("The read failed: " + errorObject.code);
