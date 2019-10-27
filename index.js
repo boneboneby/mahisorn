@@ -321,6 +321,12 @@ app.post('/webhook', (req, res) => {
     isGeo5days = false;
 
   }
+  else if (type === 'location' && !isGeo5days && !isGeoDaily){
+    console.log('Function Find Place Started')
+    sendNearestLoc(sender, userLat , userLon);
+    
+
+  }
 ///////////////////////////////////////////Message Type Location///////////////////////////////////////////
 
 ///////////////////////////////////////////Message Type Text///////////////////////////////////////////
@@ -417,7 +423,7 @@ app.post('/webhook', (req, res) => {
   else {
     if(!isForLop){
       deFaultFallback(sender, text);
-      usersID.once("value", function(snapshot) {
+      usersID.on("value", function(snapshot) {
         console.log(snapshot.val());
       }, function (errorObject) {
         console.log("The read failed: " + errorObject.code);
@@ -1477,6 +1483,36 @@ function deFaultFallback (sender, text) {
 }
 
 //////////////////////////////////////////////////ETC.///////////////////////////////////////////////////////////////////
+function sendNearestLoc (sender, userLat , userLon) {
+  
+  let data = {
+    to: sender,
+    messages: [
+      {
+        type: "location",
+        title: "Test",
+        address: "ATM ธนาคาร ธ.ก.ส. near me",
+        latitude: userLat,
+        longitude: userLon
+      }
+    ]
+  }
+  request({
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer '+CH_ACCESS_TOKEN+''
+    },
+    url: 'https://api.line.me/v2/bot/message/push',
+    method: 'POST',
+    body: data,
+    json: true
+  }, function (err, res, body) {
+    if (err) console.log('error')
+    if (res) console.log('URL : https://api.line.me/v2/bot/message/push || Type of method : POST || Result : success')
+    if (body) console.log(body)
+  })
+}
+
 
 //////////////////////////////////////////////////Translate Function///////////////////////////////////////////////////////////////////
 function translateWeatherTH(weather){
