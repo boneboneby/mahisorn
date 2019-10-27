@@ -11,7 +11,7 @@ admin.initializeApp({
 var db = admin.database();
 var ref = db.ref("server/saving-data/UserInfo");
 
-var usersRef = ref.child("GeoDaily");
+var usersRef = ref.child("userInfo");
 // usersRef.set({
 //   alanisawesome: {
 //     date_of_birth: "June 23, 1912",
@@ -285,6 +285,10 @@ app.post('/webhook', (req, res) => {
   console.log('type', type)
  
   var sender = req.body.events[0].source.userId
+  usersRef.child(sender).set({
+      isStatusTest: "false",
+      isLastError: "false"
+    });
   var replyToken = req.body.events[0].replyToken
   console.log("Message from User : "+ text + " || UserId : " + sender )
   console.log("Type of sender ID : "+ typeof sender + " || Sender type : " + typeof text)
@@ -323,7 +327,7 @@ app.post('/webhook', (req, res) => {
         isGeoDaily = true;
         isDailyWeather = true;
         isForLop = true;
-        weatherDailySelectResTypeCarouselTemplate(sender)
+        weatherDailyMenuCarouselTemplate(sender)
         break;
         }
       }
@@ -337,7 +341,7 @@ app.post('/webhook', (req, res) => {
     for ( i=0;i  < wordDailyByZipCode.length ;  i++ ){
       if (wordDailyByZipCode[i]==text) {
         isForLop = true;
-        if(isTextDaily) weatherDailyByZipCodeText(sender,text);
+        weatherDailyByZipCodeText(sender,text);
         break;
         }
       }
@@ -351,11 +355,8 @@ app.post('/webhook', (req, res) => {
         }
     
     
-  if (text === 'พยากรณ์อากาศประจำวันข้อความ' ) {
-    isTextDaily = true;
-    weatherDailyMenuCarouselTemplate(sender)
-  }
-  else if (text === 'เลือกรหัสไปรษณีย์'){
+  
+  if (text === 'เลือกรหัสไปรษณีย์'){
     quickReplyWeatherDailbyZipCode(sender)
     
   }
@@ -391,7 +392,15 @@ app.post('/webhook', (req, res) => {
     entrepreneurCredit(sender)
   }
   else {
-    if(!isForLop) deFaultFallback(sender, text);}
+    if(!isForLop){
+      deFaultFallback(sender, text);
+      usersRef.child(sender).set({
+        isStatusTest: "false",
+        isLastError: "true" ,
+        text: text
+      });
+    }
+  }
   
 }
   res.sendStatus(200)
@@ -742,8 +751,8 @@ function quickReplyWeatherDailbyZipCode (sender, text) {
 //////////////////////////////////////////////////Daily Weather by Destrict///////////////////////////////////////////////
 
 function weatherDailyByZipCodeText (sender, text) {
-  isTextDaily = false;
-  let eachCaseDestrict = '';
+  
+  let eachCaseDestrict = text;
   eachCaseDestrict = translateZipCodeTH(eachCaseDestrict);
 
   
@@ -789,10 +798,7 @@ const pushWeatherDaily = async (dMsg ,dMsg2  , userId) => {
 //////////////////////////////////////////////////Daily Weather by Geo/////////////////////////////////////////////////////////////
 function geoDaily (sender , userLat , userLon) {
 
-  usersRef.child(sender).set({
-    Lat: userLat,
-    Lon: userLon
-  });
+
 
   let DAILYWEATHER_BY_GEO = `https://api.openweathermap.org/data/2.5/weather/?lat=${userLat}&lon=${userLon}&appid=686d2c96c7002be9b1e714457eac2caf&units=metric&type=accurate`;
     request(DAILYWEATHER_BY_GEO, function (error, response, body) {
@@ -909,7 +915,7 @@ function quickReply5daysZipCode (sender, text) {
 //////////////////////////////////////////////////5days Weather by District///////////////////////////////////////////////
 
 function weather5daysByZipCode (sender, text) {
-  let eachCase5daysDistrict = '';
+  let eachCase5daysDistrict = text;
   eachCase5daysDistrict = translateZipCodeTH(eachCase5daysDistrict);
   
   let url5daysByDistrict = `${url5daysForecastByDistrict}${eachCase5daysDistrict},th`
@@ -1463,7 +1469,7 @@ function sendLocation (sender, text) {
 
 
 
-// app.set('port', (process.env.PORT || 80))
+app.set('port', (process.env.PORT || 80))
 app.listen(app.get('port'), function () {
   console.log('run at port', app.get('port'))
 })
