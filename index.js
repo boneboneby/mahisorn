@@ -580,7 +580,7 @@ function weatherDailyMenuCarouselTemplate (sender, text) {
             {
               type: "message",
               label: "เลือกรหัสไปรษณีย์",
-              text: "เลือกรหัสไปรษณีย์"
+              text: "พยากรณ์อากาศประจำวันตามรหัสไปรษณีย์"
             },
             {
               type: "message",
