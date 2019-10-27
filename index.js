@@ -12,6 +12,7 @@ var db = admin.database();
 var ref = db.ref("server/saving-data/UserInfo");
 
 var usersRef = ref.child("userInfo");
+
 // usersRef.set({
 //   alanisawesome: {
 //     date_of_birth: "June 23, 1912",
@@ -119,30 +120,36 @@ function requestImg5days (sender , userLat , userLon ){
     }else if (error){
       console.log('Request api ERROR ')
     }
+    let Day1WeatherTranslate = translateWeatherTH(body.list[0].weather[0].description);
+    let Day2WeatherTranslate = translateWeatherTH(body.list[9].weather[0].description);
+    let Day3WeatherTranslate = translateWeatherTH(body.list[17].weather[0].description)
+    let Day4WeatherTranslate = translateWeatherTH(body.list[25].weather[0].description)
+    let Day5WeatherTranslate = translateWeatherTH(body.list[33].weather[0].description)
+
   let imgHeader = 'พยากรณ์อากาศ เขต:'+body.city.name ;
   let imgDay1Date = 'วันที่: '+body.list[0].dt_txt;
   let imgDay1Temp = 'อุณภูมิ: '+body.list[0].main.temp+'°C';
-  let imgDay1Weather = 'สภาพอากาศ: '+body.list[0].weather[0].description;
+  let imgDay1Weather = 'สภาพอากาศ: '+Day1WeatherTranslate;
   let imgDay1Humidity = 'ความชื้น'+body.list[0].main.humidity+'%';
 
   let imgDay2Date = 'วันที่:'+body.list[9].dt_txt;
   let imgDay2Temp = 'อุณภูมิ: '+body.list[9].main.temp+'°C';
-  let imgDay2Weather = 'สภาพอากาศ: '+body.list[9].weather[0].description;
+  let imgDay2Weather = 'สภาพอากาศ: '+Day2WeatherTranslate;
   let imgDay2Humidity = 'ความชื้น'+body.list[9].main.humidity+'%';
 
   let imgDay3Date = 'วันที่:'+body.list[17].dt_txt;
   let imgDay3Temp = 'อุณภูมิ: '+body.list[17].main.temp+'°C';
-  let imgDay3Weather = 'สภาพอากาศ: '+body.list[17].weather[0].description;
+  let imgDay3Weather = 'สภาพอากาศ: '+Day3WeatherTranslate;
   let imgDay3Humidity = 'ความชื้น'+body.list[17].main.humidity+'%';
 
   let imgDay4Date = 'วันที่:'+body.list[25].dt_txt;
   let imgDay4Temp = 'อุณภูมิ: '+body.list[25].main.temp+'°C';
-  let imgDay4Weather = 'สภาพอากาศ: '+body.list[25].weather[0].description;
+  let imgDay4Weather = 'สภาพอากาศ: '+Day4WeatherTranslate;
   let imgDay4Humidity = 'ความชื้น'+body.list[25].main.humidity+'%';
 
   let imgDay5Date = 'วันที่:'+body.list[33].dt_txt;
   let imgDay5Temp = 'อุณภูมิ: '+body.list[33].main.temp+'°C';
-  let imgDay5Weather = 'สภาพอากาศ: '+body.list[33].weather[0].description;
+  let imgDay5Weather = 'สภาพอากาศ: '+Day5WeatherTranslate;
   let imgDay5Humidity = 'ความชื้น'+body.list[33].main.humidity+'%';
 
   
@@ -285,6 +292,9 @@ app.post('/webhook', (req, res) => {
   console.log('type', type)
  
   var sender = req.body.events[0].source.userId
+
+  var usersID = ref.child(`userInfo/${sender}`);
+  
   usersRef.child(sender).set({
       isStatusTest: "false",
       isLastError: "false"
@@ -315,6 +325,8 @@ app.post('/webhook', (req, res) => {
 
 ///////////////////////////////////////////Message Type Text///////////////////////////////////////////
   else if(type === 'text' && eventsType === 'message'){
+    isGeo5days = false;
+    isGeoDaily = false;
     for ( i=0;i  < wordStarterWeatherMenu.length ;  i++ ){
       if (wordStarterWeatherMenu[i]==text) {
         isForLop = true;
@@ -360,14 +372,25 @@ app.post('/webhook', (req, res) => {
     quickReplyWeatherDailbyZipCode(sender)
     
   }
-  else if (text === 'ส่งที่อยู่'){
-    sendLocation(sender)
-    
-  }
   else if (text === 'พยากรณ์อากาศ 5 วันตามรหัสไปรษณีย์'){
     quickReply5daysZipCode(sender)
     
   }
+  else if (text === 'พยากรณ์อากาศประจำวันตามที่อยู่'){
+    isGeoDaily = true;
+    sendLocation(sender)
+    
+  }
+  else if (text === 'พยากรณ์อากาศ 5 วันตามที่อยู่'){
+    isGeo5days = true;
+    sendLocation(sender)
+    
+  }
+  else if (text === 'select type'){
+    weatherDailySelectResTypeCarouselTemplate(sender)
+    
+  }
+  
   else if (text === 'ตั้งเวลาแจ้งเตือนฝนตก'){
     quickReplyWarningForecast(sender)
     
@@ -394,7 +417,7 @@ app.post('/webhook', (req, res) => {
   else {
     if(!isForLop){
       deFaultFallback(sender, text);
-      usersRef.on("value", function(snapshot) {
+      usersID.on("value", function(snapshot) {
         console.log(snapshot.val());
       }, function (errorObject) {
         console.log("The read failed: " + errorObject.code);
@@ -474,7 +497,6 @@ function weatherMenuCarouselTemplate (sender, text) {
 } 
 ///////////////////////////////////////////////Starter Carousel Weather////////////////////////////////////////////////////
 
-
 function weatherDailySelectResTypeCarouselTemplate (sender, text) {
   let data = {
     to: sender,
@@ -532,8 +554,8 @@ function weatherDailySelectResTypeCarouselTemplate (sender, text) {
   })
 } 
 
-
 ///////////////////////////////////////////////Daily Carousel Weather////////////////////////////////////////////////////
+
 function weatherDailyMenuCarouselTemplate (sender, text) {
   let data = {
     to: sender,
@@ -563,7 +585,7 @@ function weatherDailyMenuCarouselTemplate (sender, text) {
             {
               type: "message",
               label: "ส่งที่อยู่",
-              text: "ส่งที่อยู่"
+              text: "พยากรณ์อากาศประจำวันตามที่อยู่"
             }
             
           ]
@@ -616,9 +638,9 @@ function a5dayMenuCarouselTemplate (sender) {
               text: "พยากรณ์อากาศ 5 วันตามรหัสไปรษณีย์"
             },
             {
-              type: "uri",
+              type: "message",
               label: "ส่งที่อยู่",
-              uri: "line://nv/location"
+              text: "พยากรณ์อากาศ 5 วันตามที่อยู่"
             }
           ]
         }
@@ -784,27 +806,24 @@ function weatherDailyByZipCodeText (sender, text) {
   return pushWeatherDaily( dMsg ,dMsg2 , sender);
     } else console.log('Request url failed', urlDailyByRestrici)
   })
+  const pushWeatherDaily = async (dMsg ,dMsg2  , userId) => {
+    request.post({
+      uri: `${LINE_MESSAGING_API}/push`,
+      headers: LINE_HEADER,
+      body: JSON.stringify({
+        to: userId,
+        messages: [{ type: "text", text: dMsg }, { type: "text", text: dMsg2 }]
+      })
+    });
+    return res.status(200).send({ message: `Push: ${msg}` });
+  };
 }
-
-const pushWeatherDaily = async (dMsg ,dMsg2  , userId) => {
-  request.post({
-    uri: `${LINE_MESSAGING_API}/push`,
-    headers: LINE_HEADER,
-    body: JSON.stringify({
-      to: userId,
-      messages: [{ type: "text", text: dMsg }, { type: "text", text: dMsg2 }]
-    })
-  });
-  return res.status(200).send({ message: `Push: ${msg}` });
-};
 
 //////////////////////////////////////////////////Daily Weather by Destrict///////////////////////////////////////////////
 
 
 //////////////////////////////////////////////////Daily Weather by Geo/////////////////////////////////////////////////////////////
 function geoDaily (sender , userLat , userLon) {
-
-
 
   let DAILYWEATHER_BY_GEO = `https://api.openweathermap.org/data/2.5/weather/?lat=${userLat}&lon=${userLon}&appid=686d2c96c7002be9b1e714457eac2caf&units=metric&type=accurate`;
     request(DAILYWEATHER_BY_GEO, function (error, response, body) {
@@ -823,7 +842,7 @@ function geoDaily (sender , userLat , userLon) {
    
     console.log('weather', weather)
     const dMsg = `พยากรณ์อากาศประจำวัน\nเขต: ${cityName}`;
-    const dMsg2 = `อุณภูมิ:  ${body.main.temp} °C \n สภาพอากาศ: ${weather}  \n ความชื้น : ${body.main.humidity}% \n ทิศทางลม : ${body.wind.deg}° \n ความเร็วลม : ${body.wind.speed} กม./ชม. `
+    const dMsg2 = `อุณภูมิ:  ${body.main.temp} °C \n สภาพอากาศ: ${weather}  \n ความชื้น : ${body.main.humidity}% \nความเร็วลม : ${body.wind.speed} กม./ชม. `
     
     return pushGeoWeatherDaily( dMsg ,dMsg2 , sender);
       }else if (error){
@@ -846,8 +865,85 @@ function geoDaily (sender , userLat , userLon) {
 
 //////////////////////////////////////////////////5days Weather by Geo/////////////////////////////////////////////////////////////
 
-function geo5days (sender , userLat , userLon) {}
+function geo5days (sender , userLat , userLon) {
   
+  let url5daysByDistrictGeo = `https://api.openweathermap.org/data/2.5/forecast/?lat=${userLat}&lon=${userLon}&appid=686d2c96c7002be9b1e714457eac2caf&units=metric&type=accurate`;
+  request(url5daysByDistrictGeo, function (error, response, body) {
+    if (!error && response.statusCode == 200) {
+      body = JSON.parse(body);
+      console.log('Request api success ')
+      console.log('The response body after parse => ',body)
+    
+                
+      let cityName = body.city.name;
+      cityName = translateDistrictTH(cityName);
+      
+    let alldates = body['list'].map(body => body.dt);
+
+    let weatherDates = []
+
+    alldates.forEach(res => {
+        let jsdate = new Date(res * 1000)
+        weatherDates.push(jsdate.toLocaleTimeString('th' , {year: 'numeric', month : 'short' , day : 'numeric' , timeZone : 'Asia/Bangkok'}))
+      })
+      const msg5daysByGeo1  = `พยากรณ์อากาศ 5 วัน\nเขต: ลาดพร้าว`;
+      const msg5daysByGeo2 = `วัน/เวลา: ${weatherDates[0]} \nสภาพอากาศ: ${translateWeatherTH(body.list[0].weather[0].description)} 
+      \nวัน/เวลา: ${weatherDates[1]} \nอุณภูมิ:  ${body.list[1].main.temp} องศา \nสภาพอากาศ:  ${translateWeatherTH(body.list[1].weather[0].description)}
+      \nวัน/เวลา: ${weatherDates[2]} \nอุณภูมิ:  ${body.list[2].main.temp} องศา \nสภาพอากาศ:  ${translateWeatherTH(body.list[2].weather[0].description)}
+      \nวัน/เวลา: ${weatherDates[3]} \nอุณภูมิ:  ${body.list[3].main.temp} องศา \nสภาพอากาศ:  ${translateWeatherTH(body.list[3].weather[0].description)}
+      \nวัน/เวลา: ${weatherDates[4]} \nอุณภูมิ:  ${body.list[4].main.temp} องศา \nสภาพอากาศ:  ${translateWeatherTH(body.list[4].weather[0].description)}
+      \nวัน/เวลา: ${weatherDates[5]} \nอุณภูมิ:  ${body.list[5].main.temp} องศา \nสภาพอากาศ:  ${translateWeatherTH(body.list[5].weather[0].description)}
+      \nวัน/เวลา: ${weatherDates[6]} \nอุณภูมิ:  ${body.list[6].main.temp} องศา \nสภาพอากาศ:  ${translateWeatherTH(body.list[6].weather[0].description)}
+      \nวัน/เวลา: ${weatherDates[7]} \nอุณภูมิ:  ${body.list[7].main.temp} องศา \nสภาพอากาศ:  ${translateWeatherTH(body.list[7].weather[0].description)}
+      \nวัน/เวลา: ${weatherDates[8]} \nอุณภูมิ:  ${body.list[8].main.temp} องศา \nสภาพอากาศ:  ${translateWeatherTH(body.list[8].weather[0].description)}
+      \nวัน/เวลา: ${weatherDates[9]} \nอุณภูมิ:  ${body.list[9].main.temp} องศา \nสภาพอากาศ:  ${translateWeatherTH(body.list[9].weather[0].description)}
+      \nวัน/เวลา: ${weatherDates[10]} \nอุณภูมิ:  ${body.list[10].main.temp} องศา \nสภาพอากาศ:  ${translateWeatherTH(body.list[10].weather[0].description)}
+      \nวัน/เวลา: ${weatherDates[11]} \nอุณภูมิ:  ${body.list[11].main.temp} องศา \nสภาพอากาศ:  ${translateWeatherTH(body.list[11].weather[0].description)}
+      \nวัน/เวลา: ${weatherDates[12]} \nอุณภูมิ:  ${body.list[12].main.temp} องศา \nสภาพอากาศ:  ${translateWeatherTH(body.list[12].weather[0].description)}
+      \nวัน/เวลา: ${weatherDates[13]} \nอุณภูมิ:  ${body.list[13].main.temp} องศา \nสภาพอากาศ:  ${translateWeatherTH(body.list[13].weather[0].description)}
+      \nวัน/เวลา: ${weatherDates[14]} \nอุณภูมิ:  ${body.list[14].main.temp} องศา \nสภาพอากาศ:  ${translateWeatherTH(body.list[14].weather[0].description)}
+      \nวัน/เวลา: ${weatherDates[15]} \nอุณภูมิ:  ${body.list[15].main.temp} องศา \nสภาพอากาศ:  ${translateWeatherTH(body.list[15].weather[0].description)}
+      \nวัน/เวลา: ${weatherDates[16]} \nอุณภูมิ:  ${body.list[16].main.temp} องศา \nสภาพอากาศ:  ${translateWeatherTH(body.list[16].weather[0].description)}
+      \nวัน/เวลา: ${weatherDates[17]} \nอุณภูมิ:  ${body.list[17].main.temp} องศา \nสภาพอากาศ:  ${translateWeatherTH(body.list[17].weather[0].description)}
+      \nวัน/เวลา: ${weatherDates[18]} \nอุณภูมิ:  ${body.list[18].main.temp} องศา \nสภาพอากาศ:  ${translateWeatherTH(body.list[18].weather[0].description)}
+      \nวัน/เวลา: ${weatherDates[19]} \nอุณภูมิ:  ${body.list[19].main.temp} องศา \nสภาพอากาศ:  ${translateWeatherTH(body.list[19].weather[0].description)}
+      \nวัน/เวลา: ${weatherDates[20]} \nอุณภูมิ:  ${body.list[20].main.temp} องศา \nสภาพอากาศ:  ${translateWeatherTH(body.list[20].weather[0].description)}`
+     
+      const msg5daysByGeo3 = `วัน/เวลา: ${body.list[21].dt_txt} \nอุณภูมิ:  ${body.list[21].main.temp} องศา \nสภาพอากาศ:  ${body.list[21].weather[0].description}
+      \nวัน/เวลา: ${body.list[22].dt_txt} \nอุณภูมิ:  ${body.list[22].main.temp} องศา \nสภาพอากาศ:  ${body.list[22].weather[0].description}
+      \nวัน/เวลา: ${body.list[23].dt_txt} \nอุณภูมิ:  ${body.list[23].main.temp} องศา \nสภาพอากาศ:  ${body.list[23].weather[0].description}
+      \nวัน/เวลา: ${body.list[24].dt_txt} \nอุณภูมิ:  ${body.list[24].main.temp} องศา \nสภาพอากาศ:  ${body.list[24].weather[0].description}
+      \nวัน/เวลา: ${body.list[25].dt_txt} \nอุณภูมิ:  ${body.list[25].main.temp} องศา \nสภาพอากาศ:  ${body.list[25].weather[0].description}
+      \nวัน/เวลา: ${body.list[26].dt_txt} \nอุณภูมิ:  ${body.list[26].main.temp} องศา \nสภาพอากาศ:  ${body.list[26].weather[0].description}
+      \nวัน/เวลา: ${body.list[27].dt_txt} \nอุณภูมิ:  ${body.list[27].main.temp} องศา \nสภาพอากาศ:  ${body.list[27].weather[0].description}
+      \nวัน/เวลา: ${body.list[28].dt_txt} \nอุณภูมิ:  ${body.list[28].main.temp} องศา \nสภาพอากาศ:  ${body.list[28].weather[0].description}
+      \nวัน/เวลา: ${body.list[29].dt_txt} \nอุณภูมิ:  ${body.list[29].main.temp} องศา \nสภาพอากาศ:  ${body.list[29].weather[0].description}
+      \nวัน/เวลา: ${body.list[30].dt_txt} \nอุณภูมิ:  ${body.list[30].main.temp} องศา \nสภาพอากาศ:  ${body.list[30].weather[0].description}
+      \nวัน/เวลา: ${body.list[31].dt_txt} \nอุณภูมิ:  ${body.list[31].main.temp} องศา \nสภาพอากาศ:  ${body.list[31].weather[0].description}
+      \nวัน/เวลา: ${body.list[32].dt_txt} \nอุณภูมิ:  ${body.list[32].main.temp} องศา \nสภาพอากาศ:  ${body.list[32].weather[0].description}
+      \nวัน/เวลา: ${body.list[33].dt_txt} \nอุณภูมิ:  ${body.list[33].main.temp} องศา \nสภาพอากาศ:  ${body.list[33].weather[0].description}
+      \nวัน/เวลา: ${body.list[34].dt_txt} \nอุณภูมิ:  ${body.list[34].main.temp} องศา \nสภาพอากาศ:  ${body.list[34].weather[0].description}
+      \nวัน/เวลา: ${body.list[35].dt_txt} \nอุณภูมิ:  ${body.list[35].main.temp} องศา \nสภาพอากาศ:  ${body.list[35].weather[0].description}
+      \nวัน/เวลา: ${body.list[36].dt_txt} \nอุณภูมิ:  ${body.list[36].main.temp} องศา \nสภาพอากาศ:  ${body.list[36].weather[0].description}
+      \nวัน/เวลา: ${body.list[37].dt_txt} \nอุณภูมิ:  ${body.list[37].main.temp} องศา \nสภาพอากาศ:  ${body.list[37].weather[0].description}
+      \nวัน/เวลา: ${body.list[38].dt_txt} \nอุณภูมิ:  ${body.list[38].main.temp} องศา \nสภาพอากาศ:  ${body.list[38].weather[0].description}
+      \nวัน/เวลา: ${body.list[39].dt_txt} \nอุณภูมิ:  ${body.list[39].main.temp} องศา \nสภาพอากาศ:  ${body.list[39].weather[0].description}`
+      return push5daysByGeo( msg5daysByGeo1 , msg5daysByGeo2 , msg5daysByGeo3, sender);
+    }
+    })
+  
+    let push5daysByGeo = async  (msg5daysByGeo1 , msg5daysByGeo2 , msg5daysByGeo3, userId ) => {
+      request.post({
+        uri: `${LINE_MESSAGING_API}/push`,
+        headers: LINE_HEADER,
+        body: JSON.stringify({
+          to: userId,
+          messages: [{ type: "text", text: msg5daysByGeo1 }, { type: "text", text: msg5daysByGeo2 } , { type: "text", text: msg5daysByGeo3 }]
+        })
+      });
+      return res.status(200).send({ message: `Push: ${msg}` });
+    };
+}
   
 //////////////////////////////////////////////////5days Weather by Geo/////////////////////////////////////////////////////////////
 
@@ -1002,8 +1098,6 @@ function weather5daysByZipCode (sender, text) {
     };
     }
       
-      
-
 //////////////////////////////////////////////////5days Weather by District///////////////////////////////////////////////
 
 
