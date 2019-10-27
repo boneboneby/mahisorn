@@ -293,7 +293,7 @@ app.post('/webhook', (req, res) => {
  
   var sender = req.body.events[0].source.userId
 
-  var usersID = ref.child(`userInfo/${sender}`);
+  var usersID = ref.child(`userInfo`);
   
   usersRef.child(sender).set({
       isStatusTest: "false",
@@ -417,7 +417,7 @@ app.post('/webhook', (req, res) => {
   else {
     if(!isForLop){
       deFaultFallback(sender, text);
-      usersID.once("isStatusTest", function(snapshot) {
+      usersID.once("value", function(snapshot) {
         console.log(snapshot.val());
       }, function (errorObject) {
         console.log("The read failed: " + errorObject.code);
