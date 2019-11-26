@@ -393,6 +393,7 @@ app.post('/webhook', (req, res) => {
     
   }
   else if (text === 'select type'){
+
     weatherDailySelectResTypeCarouselTemplate(sender)
     
   }
@@ -537,9 +538,9 @@ function weatherDailySelectResTypeCarouselTemplate (sender, text) {
               text: "พยากรณ์อากาศประจำวันรูปภาพ"
             },
             {
-              type: "message",
+              type: "uri",
               label: "กราฟ",
-              text: "พยากรณ์อากาศประจำวันกราฟ"
+              uri: "line://app/1592442003-eAAbDm7d"
             }
           ]
         }
@@ -1560,6 +1561,18 @@ function translateZipCodeTH(zipCode){
   return zipCode
 }
 
+function translateWeatherToImg(weatherToImg){
+  if(weatherToImg === 'clear sky') weatherToImg = "https://sv1.picz.in.th/images/2019/10/28/ghN6wE.th.png";
+  else if (weatherToImg === 'few clouds') weatherToImg = "https://sv1.picz.in.th/images/2019/10/28/ghNIhJ.th.png";
+  else if (weatherToImg === 'scattered clouds') weatherToImg = "https://sv1.picz.in.th/images/2019/10/28/ghBene.th.png";
+  // else if (weatherToImg === 'broken clouds') weatherToImg = "เมฆเป็นหย่อมๆ กระจายตัวกว้าง";
+  // else if (weatherToImg === 'light rain') weatherToImg = "ฝนตกบางเบา";
+  // else if (weatherToImg === 'light intensity drizzle') weatherToImg = "ฝนตกแดดออก";
+  // else if (weatherToImg === 'moderate rain') weatherToImg = "ฝนตกหนัก";
+  // else if (weatherToImg === 'overcast clouds') weatherToImg = "เมฆปกคลุมหนาแน่น";
+  else weatherToImg = 'https://sv1.picz.in.th/images/2019/10/28/ghkzWW.th.png'
+  return weatherToImg
+}
 //////////////////////////////////////////////////Translate Function///////////////////////////////////////////////////////////////////
 
 /////////////////////////Button Send Location
@@ -1797,18 +1810,7 @@ function flexGeoWeather (sender, text ) {
 })
 }
 
-function translateWeatherToImg(weatherToImg){
-  if(weatherToImg === 'clear sky') weatherToImg = "https://sv1.picz.in.th/images/2019/10/28/ghN6wE.th.png";
-  else if (weatherToImg === 'few clouds') weatherToImg = "https://sv1.picz.in.th/images/2019/10/28/ghNIhJ.th.png";
-  else if (weatherToImg === 'scattered clouds') weatherToImg = "https://sv1.picz.in.th/images/2019/10/28/ghBene.th.png";
-  // else if (weatherToImg === 'broken clouds') weatherToImg = "เมฆเป็นหย่อมๆ กระจายตัวกว้าง";
-  // else if (weatherToImg === 'light rain') weatherToImg = "ฝนตกบางเบา";
-  // else if (weatherToImg === 'light intensity drizzle') weatherToImg = "ฝนตกแดดออก";
-  // else if (weatherToImg === 'moderate rain') weatherToImg = "ฝนตกหนัก";
-  // else if (weatherToImg === 'overcast clouds') weatherToImg = "เมฆปกคลุมหนาแน่น";
-  else weatherToImg = 'https://sv1.picz.in.th/images/2019/10/28/ghkzWW.th.png'
-  return weatherToImg
-}
+
 //////////////////////////Flex Msg Daily Weather
 
 function flexDailyWeather (sender, text ) {
